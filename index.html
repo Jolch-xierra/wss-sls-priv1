@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Purpose, My Future – Primary Edition</title>
+  <title>My Purpose, My Future – Primary Edition (Hero Expedition)</title>
   
   <!-- Tailwind CSS Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,10 +22,40 @@
               600: '#0d9488',
               700: '#0f766e',
               800: '#115e59',
-              850: '#114e4a',
               900: '#134e4a',
-              950: '#042f2e',
+            },
+            coral: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+            },
+            amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            slate: {
+              750: '#1e293b',
+              850: '#0f172a'
             }
+          },
+          boxShadow: {
+            'premium-sm': '0 2px 8px -1px rgba(13, 148, 136, 0.04), 0 1px 3px -1px rgba(13, 148, 136, 0.02)',
+            'premium-md': '0 10px 25px -5px rgba(13, 148, 136, 0.06), 0 8px 16px -6px rgba(13, 148, 136, 0.04)',
+            'premium-lg': '0 20px 40px -10px rgba(13, 148, 136, 0.1), 0 12px 20px -8px rgba(13, 148, 136, 0.05)',
+            'card-selected': '0 0 0 3px rgba(20, 184, 166, 0.4), 0 10px 25px -5px rgba(13, 148, 136, 0.15)',
+            'coral-glow': '0 0 15px rgba(244, 63, 94, 0.35)',
+            'gold-glow': '0 0 20px rgba(245, 158, 11, 0.45)'
           }
         }
       }
@@ -35,9 +65,18 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Custom Core Styling and Animations -->
   <style>
-    /* Printing Overrides */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fredoka:wght@400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .font-primary-bubble {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* Print styles optimized completely for physical card cut-outs */
     @media print {
       body {
         background-color: white !important;
@@ -50,7 +89,9 @@
       .journey-bar-container,
       button,
       input[type="radio"],
-      select {
+      select,
+      #teacher-notes-panel,
+      #reset-btn {
         display: none !important;
       }
       .lg-col-span-8 {
@@ -59,62 +100,84 @@
       }
       .print-card-wrapper {
         width: 100% !important;
-        max-width: 100% !important;
-        border: 2px solid #0d9488 !important;
+        max-width: 520px !important;
+        border: 4px double #0d9488 !important;
         box-shadow: none !important;
-        margin: 0 !important;
-        padding: 1.5rem !important;
+        margin: 20px auto !important;
+        padding: 2.5rem !important;
       }
-      .rounded-2xl {
-        border: none !important;
+      .rounded-2xl, .rounded-3xl {
+        border-radius: 8px !important;
       }
     }
 
-    /* Holographic Laser Grid Backdrop for Steps */
+    /* Elegant Topological Grid lines for expedition desk environment */
     .bg-grid-pattern {
-      background-size: 20px 20px;
+      background-size: 36px 36px;
       background-image: 
-        linear-gradient(to right, rgba(13, 148, 136, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(13, 148, 136, 0.05) 1px, transparent 1px);
+        linear-gradient(to right, rgba(13, 148, 136, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(13, 148, 136, 0.03) 1px, transparent 1px);
     }
 
-    /* Sparkle and Waving avatar Keyframes */
+    /* Interactive Trail Waves behind the path map */
+    .adventure-wave-bg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23e6fbf7' fill-opacity='0.5' d='M0,192L48,202.7C96,213,192,235,288,218.7C384,203,480,149,576,144C672,139,768,181,864,202.7C960,224,1056,224,1152,202.7C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: cover;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Keyframes for Hero Avatar bouncy visual cues */
     @keyframes waveAndSparkle {
       0% { transform: translateY(0) scale(1); }
-      20% { transform: translateY(-8px) scale(1.1); }
-      40% { transform: translateY(0) scale(1.05); }
-      60% { transform: translateY(-4px) scale(1.05); }
-      80% { transform: translateY(0) scale(1); }
+      30% { transform: translateY(-12px) scale(1.12); }
+      50% { transform: translateY(2px) scale(0.97); }
+      70% { transform: translateY(-4px) scale(1.03); }
       100% { transform: translateY(0) scale(1); }
     }
 
     @keyframes handWave {
       0%, 100% { transform: rotate(0deg); }
       25% { transform: rotate(25deg); }
-      75% { transform: rotate(-15deg); }
+      75% { transform: rotate(-20deg); }
     }
 
     .animate-waveAndSparkle {
-      animation: waveAndSparkle 1.2s ease-in-out;
+      animation: waveAndSparkle 1.2s cubic-bezier(0.25, 1, 0.25, 1) forwards;
     }
 
     .animate-waveAndSparkle .avatar-hand-pivot {
       animation: handWave 0.6s ease-in-out 2;
     }
 
-    /* Sticker Pop In Keyframe */
+    /* Floating bubble decoration animation */
+    @keyframes slowFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.25; }
+      50% { transform: translateY(-15px) rotate(5deg); opacity: 0.45; }
+    }
+
+    .animate-slow-float-1 { animation: slowFloat 8s ease-in-out infinite; }
+    .animate-slow-float-2 { animation: slowFloat 11s ease-in-out infinite 2s; }
+    .animate-slow-float-3 { animation: slowFloat 14s ease-in-out infinite 4s; }
+
+    /* Screen entrance transitions */
     @keyframes popIn {
-      0% { transform: scale(0.6) rotate(5deg); opacity: 0; }
-      70% { transform: scale(1.1) rotate(-3deg); }
+      0% { transform: scale(0.95) rotate(1deg); opacity: 0; }
+      70% { transform: scale(1.02) rotate(-0.2deg); }
       100% { transform: scale(1) rotate(0); opacity: 1; }
     }
     .animate-popIn {
-      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-    /* Slide Up Animation */
     @keyframes slideUp {
-      from { transform: translateY(24px); opacity: 0; }
+      from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
     .animate-slideUp {
@@ -130,49 +193,57 @@
     }
 
     .animate-spin-slow {
-      animation: spin 10s linear infinite;
+      animation: spin 30s linear infinite;
     }
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
 
-    .shadow-neon {
-      box-shadow: 0 0 15px rgba(13, 148, 136, 0.12);
+    /* Card active state tactile micro-shadow transition */
+    .card-adventure {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .card-adventure:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -6px rgba(13, 148, 136, 0.1);
     }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-orange-50/40 via-amber-50/30 to-orange-100/20 text-slate-800 font-sans selection:bg-teal-100 flex flex-col justify-between transition-colors duration-1000">
+<body class="min-h-screen bg-[#f8fafc] text-slate-800 font-sans selection:bg-teal-100 flex flex-col justify-between transition-all duration-1000 overflow-x-hidden">
 
-  <!-- Header Bar -->
-  <header class="bg-teal-700 text-white shadow-md print:hidden">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+  <!-- Top Navigation & Interactive Expedition Header -->
+  <header class="bg-white border-b border-slate-200/80 sticky top-0 z-50 print:hidden shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <div class="bg-white/10 p-2 rounded-xl">
-          <i data-lucide="compass" class="w-8 h-8 text-teal-200 animate-spin-slow"></i>
+        <div class="bg-teal-50 p-2.5 rounded-2xl border border-teal-100/80 shadow-inner flex items-center justify-center">
+          <i data-lucide="compass" class="w-7 h-7 text-teal-600 animate-spin-slow"></i>
         </div>
         <div>
-          <h1 class="font-bold text-lg sm:text-xl tracking-tight font-serif">My Purpose, My Future</h1>
-          <p class="text-xs text-teal-100">Primary Edition (P5 – P6)</p>
+          <h1 class="font-primary-bubble font-bold text-xl sm:text-2xl tracking-tight text-teal-900 flex items-center gap-2">
+            My Purpose, My Future
+            <span class="text-[10px] bg-teal-100/80 text-teal-800 px-2.5 py-0.5 rounded-lg font-sans font-extrabold uppercase tracking-wide">P5-P6 Trail</span>
+          </h1>
+          <p class="text-[10px] text-teal-600 font-bold tracking-wider uppercase">Active Adventure Camp Workspace</p>
         </div>
       </div>
 
-      <div class="flex items-center flex-wrap gap-3">
-        <!-- Student Name Input -->
-        <div class="flex items-center gap-2 bg-teal-855 px-3 py-1.5 rounded-lg border border-teal-600/60 shadow-inner">
-          <i data-lucide="user" class="w-4 h-4 text-teal-300"></i>
+      <div class="flex items-center flex-wrap gap-3 w-full sm:w-auto justify-end">
+        <!-- Student Identity Badge -->
+        <div class="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-150 focus-within:bg-white transition-all w-full sm:w-56 shadow-xs">
+          <i data-lucide="user-check" class="w-4 h-4 text-slate-400"></i>
           <input 
             type="text" 
             id="student-name-input" 
-            placeholder="Type your name..." 
-            class="bg-transparent text-sm text-white placeholder-teal-400 outline-none w-32 focus:w-40 transition-all font-semibold"
+            placeholder="Explorer Name..." 
+            class="bg-transparent text-xs text-slate-700 placeholder-slate-400 outline-none w-full font-bold uppercase tracking-wide"
           />
         </div>
 
-        <!-- Teacher Notes Toggle -->
+        <!-- Teacher Facilitation Notes Toggle -->
         <button 
           id="toggle-teacher-notes"
-          class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all bg-teal-800 hover:bg-teal-750 text-teal-100 border-teal-600"
+          class="flex items-center gap-2 text-xs font-bold px-3.5 py-2.5 rounded-xl border transition-all bg-white hover:bg-teal-50 border-teal-200 text-teal-700 shadow-xs"
         >
           <i data-lucide="eye" id="teacher-notes-icon" class="w-4 h-4"></i>
           <span id="teacher-notes-btn-text">Teacher View</span>
@@ -181,28 +252,38 @@
     </div>
   </header>
 
-  <!-- Interactive Journey Map & Progress Board -->
-  <div class="bg-white border-b border-slate-200 py-6 px-4 shadow-sm print:hidden select-none relative overflow-hidden journey-bar-container">
-    <div class="max-w-4xl mx-auto">
-      <div class="relative w-full flex items-center justify-between px-4 sm:px-10 mb-2 mt-4">
-        <!-- Background Journey Line -->
-        <div class="absolute left-10 right-10 top-1/2 h-1 bg-slate-200 -translate-y-1/2 rounded-full"></div>
-        
-        <!-- Active Filled Journey Line -->
-        <div id="filled-journey-line" class="absolute left-10 top-1/2 h-1 bg-teal-500 -translate-y-1/2 rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+  <!-- Tactile Adventure Trail Map Board with Dynamic Moving Character Avatar -->
+  <div class="bg-white border-b border-slate-200 py-6 px-4 shadow-xs print:hidden select-none relative overflow-hidden journey-bar-container">
+    
+    <!-- Dynamic SVG scene shapes to bring atmosphere to life -->
+    <div class="absolute -top-6 -left-6 w-24 h-24 bg-teal-50/40 rounded-full blur-xl pointer-events-none"></div>
+    <div class="absolute top-1/2 right-1/4 w-32 h-32 bg-amber-50/30 rounded-full blur-2xl pointer-events-none"></div>
+    
+    <div class="max-w-4xl mx-auto relative">
+      <!-- Faint decorative background landscape curves -->
+      <div class="adventure-wave-bg"></div>
 
-        <!-- Moving Explorer Kid Avatar -->
-        <div id="avatar-container" class="absolute top-[-36px] transition-all duration-500 ease-out z-20 flex flex-col items-center" style="left: calc(10px + 0%);">
+      <div class="relative w-full flex items-center justify-between px-4 sm:px-12 mb-2 mt-4 z-10">
+        
+        <!-- Base Line Expedition Track (Dotted Trail) -->
+        <div class="absolute left-12 right-12 top-1/2 h-1 bg-dashed border-t-2 border-slate-200 -translate-y-1/2"></div>
+        
+        <!-- Active Glowing Progress Line -->
+        <div id="filled-journey-line" class="absolute left-12 top-1/2 h-1 bg-gradient-to-r from-teal-500 to-amber-500 -translate-y-1/2 rounded-full transition-all duration-700 ease-out shadow-premium-sm" style="width: 0%;"></div>
+
+        <!-- Float-moving Character Avatar Frame -->
+        <div id="avatar-container" class="absolute top-[-36px] transition-all duration-700 ease-out z-20 flex flex-col items-center" style="left: calc(12px + 0%);">
           <div id="explorer-kid-avatar" class="relative flex flex-col items-center select-none">
-            <!-- Dynamic sparkle container -->
+            
+            <!-- Dynamic sparkle stars around character -->
             <div id="sparkle-layer" class="absolute -top-6 w-14 h-14 pointer-events-none hidden">
-              <div class="absolute top-0 left-2 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
+              <div class="absolute top-0 left-2 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-ping"></div>
               <div class="absolute top-1 right-2 w-3 h-3 bg-teal-300 rounded-full animate-ping delay-75"></div>
-              <div class="absolute bottom-3 left-1 w-2 h-2 bg-amber-400 rounded-full animate-ping delay-150"></div>
-              <div class="absolute bottom-1 right-2.5 w-2.5 h-2.5 bg-yellow-200 rounded-full animate-ping delay-100"></div>
+              <div class="absolute bottom-3 left-1 w-2 h-2 bg-coral-400 rounded-full animate-ping delay-150"></div>
             </div>
-            <!-- Scaled Explorer Kid SVG -->
-            <svg width="52" height="52" viewBox="0 0 46 46" fill="none" class="filter drop-shadow-md">
+            
+            <!-- Stylized Explorer Kid Character SVG -->
+            <svg width="54" height="54" viewBox="0 0 46 46" fill="none" class="filter drop-shadow-md">
               <circle cx="23" cy="20" r="12" fill="#0d9488" />
               <circle cx="23" cy="20" r="9" fill="#fcd34d" />
               <path d="M14 18 C14 11 32 11 32 18 C30 15 16 15 14 18 Z" fill="#78350f" />
@@ -221,161 +302,176 @@
           </div>
         </div>
 
-        <!-- Journey Step Nodes -->
-        <button onclick="gotoStep(1)" class="journey-node relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-teal-600 text-white ring-4 ring-teal-100 scale-110 shadow-md">1</button>
-        <button id="node-2" onclick="gotoStep(2)" disabled class="journey-node relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">2</button>
-        <button id="node-3" onclick="gotoStep(3)" disabled class="journey-node relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">3</button>
-        <button id="node-4" onclick="gotoStep(4)" disabled class="journey-node relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">4</button>
-        <button id="node-5" onclick="gotoStep(5)" disabled class="journey-node relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">5</button>
+        <!-- Node Checkpoint Flags -->
+        <button onclick="gotoStep(1)" class="journey-node relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs bg-teal-600 text-white ring-4 ring-teal-100 scale-110 shadow-md">1</button>
+        <button id="node-2" onclick="gotoStep(2)" disabled class="journey-node relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">2</button>
+        <button id="node-3" onclick="gotoStep(3)" disabled class="journey-node relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">3</button>
+        <button id="node-4" onclick="gotoStep(4)" disabled class="journey-node relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">4</button>
+        <button id="node-5" onclick="gotoStep(5)" disabled class="journey-node relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed">5</button>
       </div>
 
-      <!-- Labels & Subtitles -->
-      <div class="w-full flex justify-between text-center px-2 sm:px-6">
-        <div class="w-1/5 flex flex-col items-center text-teal-700 font-extrabold" id="label-1">
-          <span class="text-[11px] sm:text-xs font-black">Start</span>
-          <span class="text-[9px] sm:text-[10px] text-slate-405 font-semibold hidden sm:inline">Success & Me</span>
+      <!-- Labels matching checkpoints with dynamic active styles -->
+      <div class="w-full flex justify-between text-center px-1 sm:px-6 relative z-10">
+        <div class="w-1/5 flex flex-col items-center text-teal-800 font-extrabold" id="label-1">
+          <span class="text-[10px] sm:text-xs font-primary-bubble uppercase tracking-wide">1. Launch Pad</span>
+          <span class="text-[9px] text-teal-600/70 font-semibold hidden sm:inline">Starting Camp</span>
         </div>
-        <div class="w-1/5 flex flex-col items-center opacity-65" id="label-2">
-          <span class="text-[11px] sm:text-xs font-black">Discover Me</span>
-          <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold hidden sm:inline">My Interests</span>
+        <div class="w-1/5 flex flex-col items-center opacity-60 text-slate-500" id="label-2">
+          <span class="text-[10px] sm:text-xs font-primary-bubble uppercase tracking-wide">2. Style Lab</span>
+          <span class="text-[9px] text-slate-400 font-semibold hidden sm:inline">Discovery Lab</span>
         </div>
-        <div class="w-1/5 flex flex-col items-center opacity-65" id="label-3">
-          <span class="text-[11px] sm:text-xs font-black">Superpowers</span>
-          <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold hidden sm:inline">Strengths & Values</span>
+        <div class="w-1/5 flex flex-col items-center opacity-60 text-slate-500" id="label-3">
+          <span class="text-[10px] sm:text-xs font-primary-bubble uppercase tracking-wide">3. Superpowers</span>
+          <span class="text-[9px] text-slate-400 font-semibold hidden sm:inline">Power Chamber</span>
         </div>
-        <div class="w-1/5 flex flex-col items-center opacity-65" id="label-4">
-          <span class="text-[11px] sm:text-xs font-black">Big World</span>
-          <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold hidden sm:inline">Problems I Care About</span>
+        <div class="w-1/5 flex flex-col items-center opacity-60 text-slate-500" id="label-4">
+          <span class="text-[10px] sm:text-xs font-primary-bubble uppercase tracking-wide">4. Big World</span>
+          <span class="text-[9px] text-slate-400 font-semibold hidden sm:inline">Observatory</span>
         </div>
-        <div class="w-1/5 flex flex-col items-center opacity-65" id="label-5">
-          <span class="text-[11px] sm:text-xs font-black">My Mission</span>
-          <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold hidden sm:inline">Purpose & Action</span>
+        <div class="w-1/5 flex flex-col items-center opacity-60 text-slate-500" id="label-5">
+          <span class="text-[10px] sm:text-xs font-primary-bubble uppercase tracking-wide">5. Mission Control</span>
+          <span class="text-[9px] text-slate-400 font-semibold hidden sm:inline">Command Deck</span>
         </div>
       </div>
 
-      <!-- Dynamic Encouraging Bubble -->
-      <div class="mt-5 border rounded-xl p-3 text-center transition-all duration-350 max-w-2xl mx-auto bg-teal-5/70 border-teal-100/50 text-teal-850">
-        <p id="encouragement-text" class="text-xs sm:text-sm font-bold animate-fadeIn">
-          You’re just getting started! Let’s explore what success means to you.
+      <!-- Ambient speech guide with subtle visual animation -->
+      <div class="mt-5 border rounded-2xl p-3 text-center bg-teal-50/60 border-teal-100 text-teal-950 flex items-center justify-center gap-2.5 max-w-xl mx-auto shadow-xs relative z-10">
+        <span class="inline-flex p-1.5 rounded-full bg-teal-100 text-teal-700 shrink-0"><i data-lucide="sparkles" class="w-4 h-4"></i></span>
+        <p id="encouragement-text" class="text-xs sm:text-sm font-bold tracking-wide animate-fadeIn text-teal-900">
+          Your journey begins here. Let's find your unique compass!
         </p>
       </div>
     </div>
   </div>
 
-  <!-- Main Multi-Column Content Wrapper -->
-  <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+  <!-- Main Grid Workspace with Atmospheric Scene Panels -->
+  <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 items-start relative">
     
-    <!-- Left Column: Primary Content Card (8 Cols) -->
-    <div class="lg:col-span-8 flex flex-col gap-6 w-full">
-      <div class="rounded-2xl shadow-sm overflow-hidden min-h-[450px] flex flex-col justify-between bg-white border border-slate-200/80 text-slate-800">
+    <!-- Left Column: Core Workstation Container (8 Cols) -->
+    <div class="lg:col-span-8 flex flex-col gap-6 w-full relative">
+      
+      <!-- Ambient Step Graphic Elements to reflect current setting -->
+      <div id="ambient-graphic-panel" class="absolute -top-12 right-4 pointer-events-none z-0 opacity-20 hidden md:block select-none">
+        <!-- Injected dynamically based on active scene/step -->
+      </div>
+
+      <div class="rounded-3xl shadow-premium-md overflow-hidden min-h-[530px] flex flex-col justify-between bg-white border border-slate-200 text-slate-800 transition-all duration-300 relative z-10">
         
-        <!-- Step Specific Card Header -->
-        <div id="screen-header" class="border-b px-6 py-4 flex items-center justify-between print:hidden bg-teal-5/50 border-slate-100">
-          <span id="checkpoint-badge" class="text-xs font-black tracking-widest bg-teal-100 px-2.5 py-1 rounded-md uppercase text-teal-700">
+        <!-- Standard Active Screen Header -->
+        <div id="screen-header" class="border-b px-6 py-4 flex items-center justify-between print:hidden bg-slate-50/50 border-slate-100">
+          <span id="checkpoint-badge" class="text-[10px] font-black tracking-widest bg-teal-100/70 text-teal-900 px-3 py-1.5 rounded-lg uppercase">
             Checkpoint 1 of 6
           </span>
-          <div class="flex items-center gap-1.5 text-slate-405 text-sm font-semibold">
-            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
-            <span id="step-title-header">Success & Me</span>
+          <div class="flex items-center gap-1.5 text-slate-600 text-xs font-bold uppercase tracking-wider">
+            <i data-lucide="flag" class="w-4 h-4 text-teal-600"></i>
+            <span id="step-title-header">Starting Camp</span>
           </div>
         </div>
 
-        <!-- Screens Content -->
-        <div class="p-6 md:p-8 flex-grow" id="screens-container">
+        <!-- Main Step Workspace Panel -->
+        <div class="p-6 md:p-8 flex-grow bg-grid-pattern relative" id="screens-container">
           
-          <!-- STEP 1: Launch Pad -->
+          <!-- STEP 1: Launch Pad (Starting Camp) -->
           <div id="screen-1" class="step-screen space-y-6">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-orange-5/50 p-5 rounded-xl border border-orange-100 relative overflow-hidden">
-              <div class="bg-orange-500 text-white p-3 rounded-xl shadow-md border-2 border-white">
-                <span class="text-2xl">🚀</span>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-amber-50/60 p-5 rounded-2xl border border-amber-200/50 relative overflow-hidden">
+              <div class="bg-amber-500 text-white p-3.5 rounded-xl shadow-xs border-2 border-white shrink-0">
+                <span class="text-2xl select-none">⛺</span>
               </div>
               <div>
-                <h2 class="text-xl md:text-2xl font-black text-slate-855 font-serif">My Hero Start</h2>
-                <p class="text-xs text-slate-500 font-bold">What does success mean to me?</p>
+                <h2 class="text-lg md:text-xl font-bold text-slate-850 font-primary-bubble">Welcome to Starting Camp</h2>
+                <p class="text-[10px] text-amber-800 font-extrabold uppercase tracking-widest">Your path begins with empathy and awareness!</p>
               </div>
+              <!-- Mini camp graphic in border -->
+              <div class="absolute right-4 bottom-1 opacity-10 pointer-events-none text-4xl">🌲</div>
             </div>
 
-            <div class="space-y-2 text-slate-605 text-sm leading-relaxed">
-              <p class="font-extrabold text-teal-700">Welcome to your purpose journey.</p>
-              <p>In this lesson, you will think about your future and how you can help others.</p>
-              <p>Success is not only about marks. It is also about being happy, kind, and useful to people around you.</p>
+            <div class="space-y-2 text-slate-600 text-xs sm:text-sm leading-relaxed border-l-4 border-teal-500 pl-4 bg-slate-50/60 p-3 rounded-r-xl">
+              <p class="font-bold text-teal-950">Your journey begins here.</p>
+              <p>In this trail, you will explore your strengths and match them to physical needs in the world around you.</p>
+              <p>Being useful and helpful is an excellent hero trait. Let's explore what matters to you!</p>
             </div>
 
-            <div class="space-y-3">
-              <p class="font-bold text-sm text-slate-705 flex items-center gap-1.5">
-                <i data-lucide="sparkles" class="w-4 h-4 text-yellow-500 fill-yellow-500"></i>
-                Click one issue you really care about making better in your lifetime:
+            <!-- Choose Issue Block -->
+            <div class="space-y-3.5">
+              <p class="font-bold text-xs sm:text-sm text-slate-700 flex items-center gap-1.5">
+                <span class="inline-flex p-1 rounded bg-teal-50 text-teal-600"><i data-lucide="heart" class="w-4 h-4"></i></span>
+                Click on one situation you care about improving in your school, community or planet:
               </p>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="step1-tiles-container">
-                <!-- Javascript will inject mission tiles here -->
+                <!-- Dynamically populated in JavaScript -->
               </div>
             </div>
 
-            <!-- Proud Option MCQ -->
-            <div class="space-y-3 pt-4 border-t border-slate-100">
-              <p class="font-bold text-sm text-slate-700">When you grow up, what would make you feel most proud?</p>
-              <div class="space-y-2" id="proud-mcq-container">
-                <!-- JS will inject radio buttons -->
+            <!-- Proud MCQ -->
+            <div class="space-y-3 pt-6 border-t border-slate-100">
+              <p class="font-bold text-xs sm:text-sm text-slate-700">When you grow up, what outcome would make you feel most proud?</p>
+              <div class="space-y-2.5" id="proud-mcq-container">
+                <!-- Dynamically populated in JavaScript -->
               </div>
             </div>
 
             <!-- Sentence Stem -->
-            <div class="space-y-2 pt-4 border-t border-slate-100">
-              <label class="block font-bold text-sm text-slate-700">A successful life is one where I…</label>
+            <div class="space-y-2.5 pt-6 border-t border-slate-100">
+              <label class="block font-bold text-xs sm:text-sm text-slate-700">Fill in the blank: A successful life is one where I…</label>
               <input 
                 type="text" 
                 id="success-stem-input"
-                placeholder="... am kind to others"
-                class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold text-slate-800"
+                placeholder="e.g. show kindness to new classmates and make people feel welcome..."
+                class="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-semibold text-slate-800 shadow-xs transition-all"
               />
-              <p class="text-xs text-slate-405 italic">Example: … am kind to others / keep trying even when work is hard / help people learn.</p>
+              <p class="text-[11px] text-slate-400 italic">Example: … am friendly to others / keep trying my best / help clean up local parks.</p>
             </div>
-
-            <p class="text-[11px] font-bold text-slate-455 italic mt-4 text-center">
-              “Every hero starts by choosing what matters to them.”
-            </p>
           </div>
 
-          <!-- STEP 2: Style Lab -->
+          <!-- STEP 2: Style Lab (Discovery Lab) -->
           <div id="screen-2" class="step-screen hidden space-y-6">
-            <div class="border-b border-slate-100 pb-3">
-              <h2 class="text-xl md:text-2xl font-black text-slate-855 font-serif">My Style Lab</h2>
-              <p class="text-xs text-slate-455 font-bold">What do I enjoy and what am I good at?</p>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-teal-50/60 p-5 rounded-2xl border border-teal-200/50 relative overflow-hidden">
+              <div class="bg-teal-600 text-white p-3.5 rounded-xl shadow-xs border-2 border-white shrink-0">
+                <span class="text-2xl select-none">🔬</span>
+              </div>
+              <div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-850 font-primary-bubble">Welcome to Style Lab</h2>
+                <p class="text-[10px] text-teal-800 font-extrabold uppercase tracking-widest">Find your natural exploration style!</p>
+              </div>
+              <div class="absolute right-4 bottom-1 opacity-10 pointer-events-none text-4xl">⚡</div>
             </div>
 
-            <div class="space-y-2 text-slate-655 text-sm">
-              <p>Everyone has different styles. There are no right or wrong answers.</p>
-              <p className="font-semibold text-teal-700">Look at the boxes and choose the styles that sound most like you (Select up to 2):</p>
+            <div class="space-y-2 text-slate-605 text-xs sm:text-sm leading-relaxed border-l-4 border-teal-500 pl-4">
+              <p class="font-bold text-teal-900">Your natural style represents how you like to interact with the world.</p>
+              <p>Explore the style cards in the deck below. Choose up to **2** styles that sound most like you:</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-              <!-- Left: Style Deck -->
+            <!-- Style Deck Dynamic Panel -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              
+              <!-- Left: Deck Selection -->
               <div class="md:col-span-7 space-y-3">
-                <span class="text-xs font-black uppercase tracking-wider text-slate-455 block">🔬 STYLE DECK</span>
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-405 block flex items-center gap-1">🔬 DISCOVERY DECK</span>
                 <div id="style-deck-container" class="space-y-3">
-                  <!-- JS Injected Style cards -->
+                  <!-- Dynamically populated in JavaScript -->
                 </div>
               </div>
 
-              <!-- Right: Lab Panel results -->
+              <!-- Right: Interactive Sticky results widget -->
               <div class="md:col-span-5">
-                <div class="bg-sky-50/50 border-2 border-sky-100 rounded-2xl p-5 sticky top-6 space-y-4 shadow-sm flex flex-col justify-between min-h-[300px]">
+                <div class="bg-teal-50/50 border-2 border-teal-100/60 rounded-2xl p-5 sticky top-6 space-y-4 shadow-sm flex flex-col justify-between min-h-[340px]">
                   <div class="space-y-4">
-                    <h3 class="text-xs font-black tracking-widest text-sky-850 uppercase border-b border-sky-100 pb-2">🧪 LAB RESULTS</h3>
+                    <h3 class="text-[11px] font-black tracking-widest text-teal-950 uppercase border-b border-teal-150/40 pb-2 flex items-center gap-1.5">
+                      <i data-lucide="beaker" class="w-4 h-4 text-teal-600"></i> LAB MATCH RESULTS
+                    </h3>
                     <div class="space-y-3">
-                      <span class="text-[10px] font-extrabold text-slate-405 uppercase tracking-widest block">My main styles:</span>
+                      <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">My selected styles:</span>
                       <div id="lab-selected-styles" class="space-y-2">
-                        <!-- JS Dynamic list -->
+                        <!-- Dynamically populated in JavaScript -->
                       </div>
                     </div>
                   </div>
 
-                  <!-- Activity selection -->
-                  <div class="pt-4 border-t border-sky-100">
-                    <span class="text-[10px] font-extrabold text-slate-405 uppercase tracking-widest block mb-2">This activity fits my style:</span>
+                  <div class="pt-4 border-t border-teal-150/50">
+                    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2">My favorite school/weekend activity is:</span>
                     <div id="activity-chips-container" class="grid grid-cols-2 gap-2">
-                      <!-- JS Dynamic chips -->
+                      <!-- Chips dynamically populated in JavaScript -->
                     </div>
                   </div>
                 </div>
@@ -385,299 +481,306 @@
 
           <!-- STEP 3: Superpower Chamber -->
           <div id="screen-3" class="step-screen hidden space-y-6">
-            <div class="border-b border-slate-100 pb-3">
-              <h2 class="text-xl md:text-2xl font-black text-slate-800 font-serif">My Superpower Chamber</h2>
-              <p class="text-xs text-slate-455 font-bold">What kind of person do I want to be?</p>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-indigo-50/60 p-5 rounded-2xl border border-indigo-200/50 relative overflow-hidden">
+              <div class="bg-indigo-600 text-white p-3.5 rounded-xl shadow-xs border-2 border-white shrink-0">
+                <span class="text-2xl select-none">✨</span>
+              </div>
+              <div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-850 font-primary-bubble">Welcome to the Superpower Chamber</h2>
+                <p class="text-[10px] text-indigo-800 font-extrabold uppercase tracking-widest">Equip your strengths & core values!</p>
+              </div>
+              <div class="absolute right-4 bottom-1 opacity-10 pointer-events-none text-4xl">🔮</div>
             </div>
 
-            <div class="space-y-2 text-slate-605 text-sm">
-              <p>Now, think about your character.</p>
-              <p>These words describe the kind of person you are or want to become.</p>
+            <div class="space-y-2 text-slate-605 text-xs sm:text-sm">
+              <p class="font-bold text-indigo-900">Your superpowers are a mix of what you are good at (Strengths) and what you stand for (Values).</p>
+              <p>Explore the wall below. Pick **2 Strengths** and **2 Values** to charge up your shield:</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-              <!-- Left: Word Wall -->
+              
+              <!-- Left: Strengths & Values choice grid -->
               <div class="md:col-span-6 space-y-4">
                 <div>
-                  <span class="text-xs font-black uppercase text-slate-455 block mb-2">🧱 WORD WALL: STRENGTHS (Choose 2)</span>
+                  <span class="text-[11px] font-black uppercase text-slate-400 block mb-2">🧱 STRENGTHS WALL (Select 2)</span>
                   <div id="strengths-wall" class="flex flex-wrap gap-2">
-                    <!-- JS Injected Strengths -->
+                    <!-- Dynamic strengths loaded here -->
                   </div>
                 </div>
 
-                <div class="pt-2 border-t border-slate-100">
-                  <span class="text-xs font-black uppercase text-slate-455 block mb-2">🧱 WORD WALL: VALUES (Choose 2)</span>
+                <div class="pt-4 border-t border-slate-100">
+                  <span class="text-[11px] font-black uppercase text-slate-400 block mb-2">🧱 CORE VALUES (Select 2)</span>
                   <div id="values-wall" class="flex flex-wrap gap-2">
-                    <!-- JS Injected Values -->
+                    <!-- Dynamic values loaded here -->
                   </div>
                 </div>
               </div>
 
-              <!-- Right: Superpower Panel -->
+              <!-- Right: Holographic Chamber status preview board -->
               <div class="md:col-span-6 relative">
-                <div id="energy-ring" class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-teal-400/20 via-indigo-500/20 to-teal-400/10 filter blur-xl transition-opacity duration-700 opacity-20"></div>
-                <div id="superpower-panel" class="relative z-10 bg-white/90 border-2 border-slate-150 rounded-2xl p-5 space-y-4 shadow-sm h-full flex flex-col justify-between">
+                <div id="energy-ring" class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-teal-400/5 via-indigo-500/10 to-teal-400/5 filter blur-xl transition-opacity duration-700 opacity-20"></div>
+                <div id="superpower-panel" class="relative z-10 bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-xs h-full flex flex-col justify-between">
                   <div class="space-y-4">
-                    <h3 class="text-xs font-black tracking-widest text-slate-705 uppercase border-b border-slate-100 pb-2">🛡️ POWER CHAMBER STATIONS</h3>
+                    <h3 class="text-[11px] font-black tracking-widest text-slate-600 uppercase border-b border-slate-100 pb-2 flex items-center gap-1.5">
+                      <i data-lucide="shield" class="w-4 h-4 text-indigo-600"></i> CHAMBER SHIELD STATUS
+                    </h3>
                     
                     <div class="space-y-2">
-                      <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">My Superpowers (Strengths)</span>
-                      <div id="station-strengths" class="flex gap-2 min-h-[40px] items-center bg-slate-50 p-2 rounded-xl flex-wrap">
-                        <span class="text-xs text-slate-400 italic">Select strengths to fill station...</span>
+                      <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">My Core Strengths</span>
+                      <div id="station-strengths" class="flex gap-2 min-h-[44px] items-center bg-slate-50 p-2.5 rounded-xl flex-wrap border border-slate-100">
+                        <span class="text-[11px] text-slate-400 italic">Choose strengths on the left...</span>
                       </div>
                     </div>
 
                     <div class="space-y-2">
-                      <span class="text-[10px] font-black text-slate-405 uppercase tracking-widest block">What Matters To Me (Values)</span>
-                      <div id="station-values" class="flex gap-2 min-h-[40px] items-center bg-slate-50 p-2 rounded-xl flex-wrap">
-                        <span class="text-xs text-slate-400 italic">Select values to fill station...</span>
+                      <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">What matters to me</span>
+                      <div id="station-values" class="flex gap-2 min-h-[44px] items-center bg-slate-50 p-2.5 rounded-xl flex-wrap border border-slate-100">
+                        <span class="text-[11px] text-slate-400 italic">Choose values on the left...</span>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Sentence stems live updating -->
-                  <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/50 space-y-2 text-xs font-bold text-slate-700 leading-normal">
+                  <!-- Sentence Stem preview box -->
+                  <div class="bg-indigo-50/40 p-4 rounded-xl border border-indigo-100/50 space-y-2.5 text-xs font-bold text-slate-700 leading-relaxed shadow-inner">
                     <p>
-                      “I hope people will say I am <span id="stem-strength-1" class="underline text-teal-650 decoration-2 font-black">______</span> and <span id="stem-strength-2" class="underline text-teal-650 decoration-2 font-black">______</span>.”
+                      “I want to be known as someone who is <span id="stem-strength-1" class="underline text-indigo-700 decoration-2 font-black">______</span> and <span id="stem-strength-2" class="underline text-indigo-700 decoration-2 font-black">______</span>.”
                     </p>
                     <p>
-                      “It is important to me to care about <span id="stem-value-1" class="underline text-indigo-650 decoration-2 font-black">______</span>.”
+                      “In my class and community, I will stand up for <span id="stem-value-1" class="underline text-indigo-700 decoration-2 font-black">______</span>.”
                     </p>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
-          <!-- STEP 4: World Screen -->
+          <!-- STEP 4: World Observatory -->
           <div id="screen-4" class="step-screen hidden space-y-6">
-            <div class="border-b border-slate-100 pb-3">
-              <h2 class="text-xl md:text-2xl font-black text-slate-800 font-serif">My Big World Screen</h2>
-              <p class="text-xs text-slate-455 font-bold">What problem do I care about?</p>
-            </div>
-
-            <!-- Globe Graphic -->
-            <div class="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border border-slate-200/60 relative overflow-hidden">
-              <div id="globe-halo" class="absolute w-36 h-36 rounded-full filter blur-xl transition-all duration-700 bg-slate-200/20"></div>
-              <div id="globe-body" class="relative z-10 w-24 h-24 rounded-full flex items-center justify-center border-4 border-slate-300 bg-slate-100 shadow-md transition-all duration-500">
-                <span id="globe-emoji" class="text-4xl animate-pulse">🌍</span>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-emerald-50/60 p-5 rounded-2xl border border-emerald-200/50 relative overflow-hidden">
+              <div class="bg-emerald-600 text-white p-3.5 rounded-xl shadow-xs border-2 border-white shrink-0">
+                <span class="text-2xl select-none">🌍</span>
               </div>
-              <p id="globe-caption" class="text-xs font-black text-slate-500 uppercase tracking-widest mt-3">My World Target Screen</p>
+              <div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-855 font-primary-bubble">Welcome to the World Observatory</h2>
+                <p class="text-[10px] text-emerald-800 font-extrabold uppercase tracking-widest">Connect your abilities to real needs!</p>
+              </div>
+              <div class="absolute right-4 bottom-1 opacity-10 pointer-events-none text-4xl">🔭</div>
             </div>
 
-            <!-- Orbiting Problem Cards -->
+            <!-- Observatory Dashboard Visual screen -->
+            <div class="flex flex-col items-center justify-center p-6 bg-slate-50/60 rounded-2xl border border-slate-250/50 relative overflow-hidden">
+              <div id="globe-halo" class="absolute w-36 h-36 rounded-full filter blur-xl transition-all duration-700 bg-slate-200/20"></div>
+              <div id="globe-body" class="relative z-10 w-24 h-24 rounded-full flex items-center justify-center border-4 border-slate-200 bg-white shadow-sm transition-all duration-500">
+                <span id="globe-emoji" class="text-4xl select-none animate-pulse">🌍</span>
+              </div>
+              <p id="globe-caption" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-3">TARGET SCREEN</p>
+            </div>
+
+            <div class="space-y-2 text-slate-605 text-xs sm:text-sm">
+              <p class="font-bold text-emerald-900">Your style and superpowers are ready. Which world challenge speaks to your heart the most?</p>
+              <p>Choose one focus area below:</p>
+            </div>
+
+            <!-- Target Problem grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="world-problems-grid">
-              <!-- JS Injected problems -->
+              <!-- Dynamically populated in JavaScript -->
             </div>
 
-            <!-- Reflection Box -->
-            <div class="space-y-3 pt-4 border-t border-slate-100">
-              <p class="font-bold text-sm text-slate-755">Why does this problem matter to you?</p>
+            <!-- Reflexive open box -->
+            <div class="space-y-3 pt-6 border-t border-slate-100">
+              <p class="font-bold text-xs sm:text-sm text-slate-700">Write a brief line: Why does this challenge matter to you?</p>
               
               <div class="flex flex-wrap gap-2 items-center">
-                <span class="text-[10px] font-black uppercase text-slate-450">💡 Quick Reasons:</span>
-                <button onclick="applyReasonHint('it hurts people')" class="reason-hint text-[10px] font-bold bg-slate-105 hover:bg-slate-200 border border-slate-300/40 text-slate-705 px-2.5 py-1 rounded-full transition-all active:scale-95">+ it hurts people</button>
-                <button onclick="applyReasonHint('it hurts animals')" class="reason-hint text-[10px] font-bold bg-slate-105 hover:bg-slate-200 border border-slate-300/40 text-slate-705 px-2.5 py-1 rounded-full transition-all active:scale-95">+ it hurts animals</button>
-                <button onclick="applyReasonHint('it hurts our planet')" class="reason-hint text-[10px] font-bold bg-slate-105 hover:bg-slate-200 border border-slate-300/40 text-slate-705 px-2.5 py-1 rounded-full transition-all active:scale-95">+ it hurts our planet</button>
-                <button onclick="applyReasonHint('it hurts my friends or family')" class="reason-hint text-[10px] font-bold bg-slate-105 hover:bg-slate-200 border border-slate-300/40 text-slate-705 px-2.5 py-1 rounded-full transition-all active:scale-95">+ it hurts my friends or family</button>
+                <span class="text-[10px] font-black uppercase text-slate-400">💡 Quick ideas:</span>
+                <button type="button" onclick="applyReasonHint('it hurts people')" class="reason-hint text-[10px] font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition-all active:scale-95 shadow-xs">+ it hurts people</button>
+                <button type="button" onclick="applyReasonHint('it hurts animals')" class="reason-hint text-[10px] font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition-all active:scale-95 shadow-xs">+ it hurts animals</button>
+                <button type="button" onclick="applyReasonHint('it hurts our planet')" class="reason-hint text-[10px] font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition-all active:scale-95 shadow-xs">+ it hurts our planet</button>
+                <button type="button" onclick="applyReasonHint('everyone deserves a fair chance')" class="reason-hint text-[10px] font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition-all active:scale-95 shadow-xs">+ everyone deserves a fair chance</button>
               </div>
 
               <div class="flex gap-2 items-center bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span class="text-xs sm:text-sm font-bold text-slate-555 shrink-0">I care about this because</span>
+                <span class="text-xs sm:text-sm font-bold text-slate-500 shrink-0">I care about this because</span>
                 <input 
                   type="text" 
                   id="problem-reason-input"
                   placeholder="it hurts animals / my friends need a clean school..."
-                  class="flex-grow bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-rose-455 focus:outline-none"
+                  class="flex-grow bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                 />
               </div>
             </div>
           </div>
 
-          <!-- STEP 5: My Mission Control -->
-          <div id="screen-5" class="step-screen hidden space-y-6 text-slate-800">
-            <div class="border-b border-slate-200 pb-3">
-              <h2 class="text-xl md:text-2xl font-black text-teal-800 font-serif tracking-wide flex items-center gap-2">
-                <i data-lucide="compass" class="w-7 h-7 text-teal-600 animate-spin-slow"></i>
-                My Mission Control
-              </h2>
-              <p class="text-slate-505 text-xs mt-1">
-                Every hero has a mission. Now you will build your own mission sentence. This mission shows how you want to use your strengths to help others.
-              </p>
+          <!-- STEP 5: Mission Control Room -->
+          <div id="screen-5" class="step-screen hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-teal-50/60 p-5 rounded-2xl border border-teal-200/50 relative overflow-hidden">
+              <div class="bg-teal-600 text-white p-3.5 rounded-xl shadow-xs border-2 border-white shrink-0">
+                <span class="text-2xl select-none">🎮</span>
+              </div>
+              <div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-855 font-primary-bubble">Welcome to Mission Control Room</h2>
+                <p class="text-[10px] text-teal-800 font-extrabold uppercase tracking-widest">Assemble your final Purpose sentence!</p>
+              </div>
+              <div class="absolute right-4 bottom-1 opacity-10 pointer-events-none text-4xl">🛰️</div>
             </div>
 
-            <!-- Dual Dashboard Layout -->
+            <div class="space-y-2 text-slate-605 text-xs sm:text-sm">
+              <p class="font-bold text-teal-950">This is the peak of your expedition.</p>
+              <p>We will assemble your custom style, superpower strength, target challenge, and desired impact into your **Official Purpose Statement**!</p>
+            </div>
+
+            <!-- Control dashboard workspace split -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-              <!-- Left Panel: Mission Builder Inputs -->
+              
+              <!-- Left Panel: Command selectors -->
               <div class="lg:col-span-7 space-y-4">
                 
-                <!-- Block 1: Choose Your Powers -->
-                <div id="builder-block-1" class="p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200">
-                  <div class="flex items-center justify-between mb-3 border-b border-slate-105 pb-2">
-                    <span class="text-xs font-black text-teal-800 uppercase tracking-widest flex items-center gap-1.5 font-sans">
+                <!-- Dashboard block 1: Powers -->
+                <div id="builder-block-1" class="p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200 shadow-xs">
+                  <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                    <span class="text-xs font-black text-teal-800 uppercase tracking-widest flex items-center gap-1.5">
                       Step 1: Choose your powers
                     </span>
                     <span id="block-1-lock" class="text-slate-400 text-[10px] font-black uppercase flex items-center gap-1">
                       <i data-lucide="lock" class="w-3.5 h-3.5"></i> INCOMPLETE
                     </span>
                   </div>
-                  <p class="text-[11px] text-slate-500 mb-3 italic">Pick one style and one strength that feel most like you.</p>
+                  <p class="text-[11px] text-slate-400 mb-3 italic">Choose one style and one strength that represent your hero personality:</p>
                   
                   <div class="space-y-3">
                     <div class="flex items-center gap-2">
-                      <label class="text-xs font-bold text-slate-650 w-24">My style:</label>
-                      <div class="w-8 h-8 shrink-0 bg-white border border-slate-200 rounded flex items-center justify-center" id="builder-style-icon">
-                        <!-- Icon JS loaded -->
-                      </div>
-                      <select id="builder-style-select" onchange="syncBuilderFromDropdowns()" class="bg-white text-slate-800 border border-slate-300 rounded px-2 py-1.5 text-xs font-bold focus:ring-2 focus:ring-teal-500 flex-grow">
-                        <option value="">-- Choose Style --</option>
-                        <option value="Hands-on Helper (Realistic)">Hands-on Helper (Realistic)</option>
-                        <option value="Curious Thinker (Investigative)">Curious Thinker (Investigative)</option>
-                        <option value="Creative Maker (Artistic)">Creative Maker (Artistic)</option>
-                        <option value="Friendly Supporter (Social)">Friendly Supporter (Social)</option>
-                        <option value="Organiser (Conventional)">Organiser (Conventional)</option>
-                        <option value="Leader (Enterprising)">Leader (Enterprising)</option>
+                      <label class="text-xs font-bold text-slate-500 w-24">My style:</label>
+                      <div class="w-8 h-8 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center" id="builder-style-icon"></div>
+                      <select id="builder-style-select" class="bg-white text-slate-800 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-bold focus:ring-2 focus:ring-teal-500 flex-grow outline-none">
+                        <!-- Options filled dynamically -->
                       </select>
                     </div>
 
                     <div class="flex items-center gap-2">
-                      <label class="text-xs font-bold text-slate-655 w-24">My strength (superpower):</label>
-                      <div class="w-8 h-8 shrink-0 bg-white border border-slate-200 rounded flex items-center justify-center text-sm">⭐</div>
-                      <select id="builder-strength-select" onchange="syncBuilderFromDropdowns()" class="bg-white text-slate-800 border border-slate-300 rounded px-2 py-1.5 text-xs font-bold focus:ring-2 focus:ring-teal-500 flex-grow">
-                        <option value="">-- Choose Strength --</option>
-                        <option value="Kind">Kind</option>
-                        <option value="Brave">Brave</option>
-                        <option value="Curious">Curious</option>
-                        <option value="Hard-working">Hard-working</option>
-                        <option value="Creative">Creative</option>
-                        <option value="Calm">Calm</option>
-                        <option value="Friendly">Friendly</option>
-                        <option value="Honest">Honest</option>
+                      <label class="text-xs font-bold text-slate-500 w-24">My strength:</label>
+                      <div class="w-8 h-8 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-sm">⭐</div>
+                      <select id="builder-strength-select" class="bg-white text-slate-800 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-bold focus:ring-2 focus:ring-teal-500 flex-grow outline-none">
+                        <!-- Options filled dynamically -->
                       </select>
                     </div>
 
-                    <p id="block-1-encouragement" class="text-[11px] text-emerald-800 font-bold bg-emerald-100/50 p-2 rounded border border-emerald-200/50 hidden">
-                      Nice! These powers show what you are good at or want to grow.
+                    <p id="block-1-encouragement" class="text-[11px] text-teal-800 font-bold bg-teal-50 p-2 rounded-lg border border-teal-200 hidden animate-fadeIn">
+                      Nice choices. These powers show your best potential!
                     </p>
                   </div>
                 </div>
 
-                <!-- Block 2: Choose Your Mission Target -->
-                <div id="builder-block-2" class="p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200">
-                  <div class="flex items-center justify-between mb-3 border-b border-slate-105 pb-2">
-                    <span class="text-xs font-black text-rose-800 uppercase tracking-widest flex items-center gap-1.5 font-sans">
-                      Step 2: Choose your mission target
+                <!-- Dashboard block 2: Problem Target -->
+                <div id="builder-block-2" class="p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200 shadow-xs">
+                  <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                    <span class="text-xs font-black text-teal-800 uppercase tracking-widest flex items-center gap-1.5">
+                      Step 2: Choose your mission focus
                     </span>
                     <span id="block-2-lock" class="text-slate-400 text-[10px] font-black uppercase flex items-center gap-1">
                       <i data-lucide="lock" class="w-3.5 h-3.5"></i> INCOMPLETE
                     </span>
                   </div>
-                  <p class="text-[11px] text-slate-505 mb-3 italic">Pick the problem you care most about from just now.</p>
+                  <p class="text-[11px] text-slate-400 mb-3 italic">Match your heart focus from earlier:</p>
                   
                   <div class="space-y-3">
                     <div class="flex items-center gap-2">
-                      <label class="text-xs font-bold text-slate-650 w-24">The problem I care about:</label>
-                      <div class="w-8 h-8 shrink-0 bg-white border border-slate-200 rounded flex items-center justify-center" id="builder-problem-icon">
-                        <i data-lucide="globe" class="w-5 h-5 text-rose-350"></i>
+                      <label class="text-xs font-bold text-slate-500 w-24">The problem:</label>
+                      <div class="w-8 h-8 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center" id="builder-problem-icon">
+                        <i data-lucide="globe" class="w-5 h-5 text-slate-300"></i>
                       </div>
-                      <select id="builder-problem-select" onchange="syncBuilderFromDropdowns()" class="bg-white text-slate-800 border border-slate-300 rounded px-2 py-1.5 text-xs font-bold focus:ring-2 focus:ring-rose-455 flex-grow">
-                        <option value="">-- Choose Target Problem --</option>
-                        <option value="Healthy lives">Healthy lives</option>
-                        <option value="Good education for all">Good education for all</option>
-                        <option value="Protecting nature and animals">Protecting nature and animals</option>
-                        <option value="No one left out">No one left out</option>
+                      <select id="builder-problem-select" class="bg-white text-slate-800 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-bold focus:ring-2 focus:ring-teal-500 flex-grow outline-none">
+                        <!-- Options filled dynamically -->
                       </select>
                     </div>
 
-                    <p id="block-2-encouragement" class="text-[11px] text-emerald-800 font-bold bg-emerald-100/50 p-2 rounded border border-emerald-200/50 hidden">
-                      Great choice. This is the problem your hero heart cares about.
+                    <p id="block-2-encouragement" class="text-[11px] text-teal-800 font-bold bg-teal-50 p-2 rounded-lg border border-teal-200 hidden animate-fadeIn">
+                      Focused! This is the goal your hero compass is pointing at.
                     </p>
                   </div>
                 </div>
 
-                <!-- Block 3: The Good I Want to See -->
-                <div id="builder-block-3" class="p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200">
-                  <div class="flex items-center justify-between mb-3 border-b border-slate-105 pb-2">
-                    <span class="text-xs font-black text-amber-800 uppercase tracking-widest flex items-center gap-1.5 font-sans">
-                      Step 3: The good I want to see
+                <!-- Dashboard block 3: Expected good impact -->
+                <div id="builder-block-3" class="p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200 shadow-xs">
+                  <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                    <span class="text-xs font-black text-teal-800 uppercase tracking-widest flex items-center gap-1.5">
+                      Step 3: The good outcome you want
                     </span>
                     <span id="block-3-lock" class="text-slate-400 text-[10px] font-black uppercase flex items-center gap-1">
                       <i data-lucide="lock" class="w-3.5 h-3.5"></i> INCOMPLETE
                     </span>
                   </div>
-                  <p class="text-[11px] text-slate-505 mb-3 italic">What good do you hope will happen if you work on this problem?</p>
+                  <p class="text-[11px] text-slate-400 mb-3 italic">What positive change do you hope to see in your class or planet?</p>
                   
                   <div class="space-y-3">
-                    <div class="flex items-center gap-2 bg-white border border-slate-300 p-2 rounded focus-within:ring-2 focus:ring-teal-500">
-                      <span class="text-xs font-bold text-slate-505 shrink-0">I hope that…</span>
+                    <div class="flex items-center gap-2 bg-white border border-slate-200 p-2 rounded-lg focus-within:ring-2 focus-within:ring-teal-500 shadow-inner">
+                      <span class="text-xs font-bold text-slate-400 shrink-0">I hope that…</span>
                       <input 
                         type="text" 
                         id="builder-impact-input"
-                        placeholder="e.g. animals are protected"
+                        placeholder="e.g. all lonely classmates find a friend..."
                         class="bg-transparent text-slate-800 font-bold text-xs flex-grow outline-none border-none focus:ring-0 p-0"
                       />
                     </div>
 
                     <div class="flex flex-wrap gap-1.5 items-center">
-                      <span class="text-[10px] font-black text-slate-450 uppercase">⚡ Idea chips:</span>
-                      <button onclick="applyImpactChip('people feel safe')" class="text-[9px] font-black bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-md transition-all active:scale-95">+ people feel safe</button>
-                      <button onclick="applyImpactChip('animals are protected')" class="text-[9px] font-black bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-md transition-all active:scale-95">+ animals are protected</button>
-                      <button onclick="applyImpactChip('no one is left out')" class="text-[9px] font-black bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-md transition-all active:scale-95">+ no one is left out</button>
-                      <button onclick="applyImpactChip('children enjoy learning')" class="text-[9px] font-black bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-md transition-all active:scale-95">+ children enjoy learning</button>
-                      <button onclick="applyImpactChip('the Earth is cleaner')" class="text-[9px] font-black bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-md transition-all active:scale-95">+ the Earth is cleaner</button>
+                      <span class="text-[10px] font-black text-slate-400 uppercase">⚡ Idea helpers:</span>
+                      <button type="button" onclick="applyImpactChip('people feel safe')" class="text-[9px] font-black bg-white hover:bg-teal-50 text-teal-800 border border-slate-200 px-2.5 py-1 rounded-lg transition-all shadow-xs">+ people feel safe</button>
+                      <button type="button" onclick="applyImpactChip('animals are protected')" class="text-[9px] font-black bg-white hover:bg-teal-50 text-teal-800 border border-slate-200 px-2.5 py-1 rounded-lg transition-all shadow-xs">+ animals are protected</button>
+                      <button type="button" onclick="applyImpactChip('no one is left out')" class="text-[9px] font-black bg-white hover:bg-teal-50 text-teal-800 border border-slate-200 px-2.5 py-1 rounded-lg transition-all shadow-xs">+ no one is left out</button>
+                      <button type="button" onclick="applyImpactChip('our school yard is clean')" class="text-[9px] font-black bg-white hover:bg-teal-50 text-teal-800 border border-slate-200 px-2.5 py-1 rounded-lg transition-all shadow-xs">+ our school yard is clean</button>
                     </div>
 
-                    <p id="block-3-encouragement" class="text-[11px] text-emerald-800 font-bold bg-emerald-100/50 p-2 rounded border border-emerald-200/50 hidden">
-                      Nice thinking. This shows the kind of change you care about.
+                    <p id="block-3-encouragement" class="text-[11px] text-teal-800 font-bold bg-teal-50 p-2 rounded-lg border border-teal-200 hidden animate-fadeIn">
+                      Wonderful! This forms your desired mission impact.
                     </p>
                   </div>
                 </div>
 
-                <!-- Term Action Step -->
+                <!-- Short-term tactile action input block -->
                 <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
-                  <label class="block text-xs font-black tracking-widest text-teal-805 uppercase">One small step I can take this term is:</label>
+                  <label class="block text-xs font-black tracking-widest text-teal-850 uppercase">One action step I can take in school this month is:</label>
                   <input 
                     type="text" 
                     id="term-action-input"
-                    placeholder="e.g. I will help a classmate who is alone..."
-                    class="w-full bg-white text-slate-800 placeholder-slate-400 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold focus:ring-2 focus:ring-teal-400 outline-none"
+                    placeholder="e.g. I will sit with the quiet student during lunch..."
+                    class="w-full bg-white text-slate-800 placeholder-slate-400 border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-bold focus:ring-2 focus:ring-teal-400 outline-none shadow-xs"
                   />
                 </div>
               </div>
 
-              <!-- RIGHT PANEL: Live Holographic Scroll Preview -->
-              <div class="lg-col-span-5 flex flex-col justify-between">
-                <div class="bg-gradient-to-b from-teal-50/60 to-white border-2 border-teal-200 rounded-xl p-5 shadow-md relative overflow-hidden flex-grow flex flex-col justify-between space-y-4">
+              <!-- Right Panel: Holographic Preview Sentence Scroll -->
+              <div class="lg:col-span-5 flex flex-col justify-between">
+                <div class="bg-gradient-to-b from-teal-50/50 to-white border-2 border-teal-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex-grow flex flex-col justify-between space-y-4">
                   <div class="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
                   
                   <div class="space-y-3 relative z-10">
-                    <div class="flex items-center gap-1.5 text-teal-800 border-b border-teal-100 pb-2">
-                      <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse"></i>
-                      <span class="text-[10.5px] font-black uppercase tracking-wider font-sans">My Hero Mission</span>
+                    <div class="flex items-center gap-1.5 text-teal-900 border-b border-teal-100 pb-2">
+                      <i data-lucide="sparkles" class="w-4 h-4 text-teal-500 fill-teal-100 animate-pulse"></i>
+                      <span class="text-[11px] font-black uppercase tracking-wider">Mission Statement Assembly</span>
                     </div>
-                    <p class="text-[10.5px] text-slate-500 leading-normal">
-                      As you choose your powers, target, and good outcome, your mission sentence will appear here.
+                    <p class="text-[10px] text-slate-400 leading-normal">
+                      As you complete your choices, your purpose statement matches automatically:
                     </p>
 
-                    <!-- Real-time dynamic preview template -->
-                    <div class="text-sm sm:text-base font-bold leading-relaxed space-y-3 text-slate-805 font-serif">
+                    <!-- Real-time Sentence Builder -->
+                    <div class="text-sm sm:text-base font-bold leading-relaxed space-y-3 text-slate-800 font-serif">
                       <span>I want to use my </span>
-                      <span id="preview-style" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded">______</span>
-                      <span> and my strength of </span>
-                      <span id="preview-strength" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded">______</span>
+                      <span id="preview-style" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg text-xs font-sans">______</span>
+                      <span> style and my strength of </span>
+                      <span id="preview-strength" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg text-xs font-sans">______</span>
                       <span> to help with </span>
-                      <span id="preview-problem" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded">______</span>
+                      <span id="preview-problem" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg text-xs font-sans">______</span>
                       <span> so that </span>
-                      <span id="preview-impact" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded">______</span>
+                      <span id="preview-impact" class="text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg text-xs font-sans">______</span>
                       <span>.</span>
                     </div>
                   </div>
 
-                  <!-- Dynamic Control Area -->
-                  <div class="pt-4 border-t border-teal-100 relative z-10 space-y-3">
+                  <!-- Lock controls -->
+                  <div class="pt-4 border-t border-teal-150 relative z-10 space-y-3">
                     <div class="text-center">
-                      <span id="mission-status-badge" class="text-xs text-amber-800 font-bold bg-amber-50 px-3 py-1.5 rounded-full border border-amber-205 inline-block">
-                        ⏳ Keep going. Your mission is still loading…
+                      <span id="mission-status-badge" class="text-xs text-amber-805 font-bold bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200 inline-block">
+                        ⏳ Complete all fields to lock in your mission!
                       </span>
                     </div>
 
@@ -687,166 +790,164 @@
                         type="button" 
                         disabled 
                         onclick="lockInMyMission()" 
-                        class="w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-lg bg-slate-105 text-slate-400 border border-slate-200 cursor-not-allowed"
+                        class="w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-xl bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed transition-all shadow-xs"
                       >
                         <i data-lucide="lock" class="w-4 h-4"></i>
-                        Lock in my mission
+                        Assemble & Complete Mission
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
-          <!-- STEP 6: Final Purpose Card summary -->
+          <!-- STEP 6: Achievement Destination Summary Card -->
           <div id="screen-6" class="step-screen hidden space-y-6 animate-slideUp">
-            <div>
-              <h2 class="text-xl md:text-2xl font-bold text-slate-855 mb-1 print-hidden font-serif">My Purpose Card</h2>
-              <p class="text-slate-550 text-sm print-hidden">Congratulations! You have completed all check-ins. Here is your official purpose summary card. You can save, print, or share it!</p>
+            <div class="text-center space-y-2">
+              <span class="text-xs bg-amber-100 text-amber-900 px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-premium-sm border border-amber-200">🏁 Destination Reached</span>
+              <h2 class="text-xl md:text-2xl font-bold text-slate-850 font-primary-bubble print-hidden">Congratulations, Explorer!</h2>
+              <p class="text-slate-500 text-xs sm:text-sm max-w-md mx-auto print-hidden">You've unlocked your printable physical Purpose Card! Scribe your name, print it out, and sketch your hero trail.</p>
             </div>
 
-            <!-- Printable Certificate Box Container -->
-            <div id="printable-card" class="bg-white border-4 border-teal-600 rounded-2xl p-6 md:p-8 shadow-md relative overflow-hidden max-w-xl mx-auto print-card-wrapper">
+            <!-- Double-bordered Premium Collectible Trading Card Frame -->
+            <div id="printable-card" class="bg-white border-4 border-double border-teal-600 rounded-3xl p-6 md:p-8 shadow-premium-lg relative overflow-hidden max-w-lg mx-auto print-card-wrapper transition-all duration-300">
               <div class="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-full -mr-16 -mt-16 -z-10 opacity-60"></div>
               <div class="absolute bottom-0 left-0 w-40 h-40 bg-teal-50 rounded-full -ml-20 -mb-20 -z-10 opacity-40"></div>
 
-              <!-- Card Header -->
-              <div class="flex items-center justify-between border-b-2 border-teal-100 pb-4 mb-5">
+              <!-- Header Card Banner -->
+              <div class="flex items-center justify-between border-b-2 border-teal-150 pb-4 mb-5">
                 <div class="flex items-center gap-3">
-                  <div class="bg-teal-600 text-white p-2.5 rounded-xl animate-spin-slow">
-                    <i data-lucide="award" class="w-6 h-6"></i>
+                  <div class="bg-teal-600 text-white p-2.5 rounded-xl flex items-center justify-center">
+                    <i data-lucide="award" class="w-6 h-6 animate-pulse"></i>
                   </div>
                   <div>
-                    <h3 class="text-base sm:text-lg font-black text-teal-805 tracking-wide uppercase font-sans">MY PURPOSE CARD</h3>
-                    <p id="card-date" class="text-[10px] text-slate-505 font-bold">Formed on 10/06/2026</p>
+                    <h3 class="text-base font-black text-teal-800 tracking-wide uppercase font-primary-bubble">HERO EXPEDITION CARD</h3>
+                    <p id="card-date" class="text-[9px] text-slate-400 font-extrabold uppercase">Unlocked: 16/06/2026</p>
                   </div>
                 </div>
 
-                <!-- Custom Golden Purpose Medal -->
-                <div class="relative w-14 h-14 shrink-0 flex items-center justify-center">
-                  <div class="absolute inset-0 rounded-full border-2 border-amber-400 bg-gradient-to-tr from-amber-200 to-yellow-400 shadow-md"></div>
-                  <div class="relative z-10 flex flex-col items-center justify-center text-amber-955">
-                    <span class="text-[10px] -mb-1">⭐</span>
-                    <span class="text-base font-black tracking-tighter">P</span>
-                  </div>
+                <div class="relative w-12 h-12 shrink-0 flex items-center justify-center">
+                  <div class="absolute inset-0 rounded-full border-2 border-amber-400 bg-gradient-to-tr from-amber-100 to-yellow-300 shadow-xs"></div>
+                  <span class="relative z-10 text-base font-black text-amber-800 select-none">⭐</span>
                 </div>
               </div>
 
-              <!-- Dynamic Filled Rows -->
-              <div class="space-y-4 text-left">
+              <!-- Filled Summary parameters -->
+              <div class="space-y-4 text-left font-sans">
                 
-                <!-- Name Row -->
-                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex items-center justify-between">
-                  <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">My Name</span>
-                  <span id="card-name-field" class="font-black text-teal-700 text-sm sm:text-base">_______________________</span>
+                <!-- Name Badge -->
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-center justify-between shadow-inner">
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Explorer Name</span>
+                  <span id="card-name-field" class="font-black text-teal-800 text-sm sm:text-base uppercase tracking-wide">_______________________</span>
                 </div>
 
-                <!-- Style Card Row -->
+                <!-- Chosen styles list -->
                 <div class="space-y-1.5">
-                  <span class="text-xs font-extrabold text-slate-405 uppercase tracking-widest block">My styles</span>
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">My Expedition Styles</span>
                   <div id="card-styles-container" class="flex gap-2 flex-wrap">
-                    <!-- Loaded dynamically -->
+                    <!-- Dynamic styles -->
                   </div>
                 </div>
 
-                <!-- Strengths list -->
-                <div class="space-y-1">
-                  <span class="text-xs font-extrabold text-slate-405 uppercase tracking-widest block">My Strengths</span>
+                <!-- Superpowers word tags -->
+                <div class="space-y-1.5">
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">Core Superpowers (Strengths)</span>
                   <div id="card-strengths-container" class="flex gap-2 flex-wrap">
-                    <!-- Loaded dynamically -->
+                    <!-- Dynamic strengths -->
                   </div>
                 </div>
 
-                <!-- Chosen target problem -->
+                <!-- Target Problem -->
                 <div>
-                  <span class="text-xs font-extrabold text-slate-405 uppercase tracking-widest block mb-1.5">What I care about</span>
-                  <div class="bg-rose-50/50 border border-rose-200 p-3 rounded-lg flex items-center gap-3">
-                    <div class="shrink-0 bg-white p-1 rounded-md shadow-xs" id="card-problem-icon-container">
-                      <i data-lucide="globe" class="w-8 h-8 text-rose-300"></i>
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-1.5">Focus Challenge targeted</span>
+                  <div class="bg-teal-50/40 border border-teal-100/50 p-3 rounded-xl flex items-center gap-3 shadow-xs">
+                    <div class="shrink-0 bg-white p-2 rounded-lg shadow-sm border border-slate-100" id="card-problem-icon-container">
+                      <i data-lucide="globe" class="w-7 h-7 text-teal-300"></i>
                     </div>
-                    <p id="card-problem-text" class="text-sm font-bold text-rose-800">Not selected yet.</p>
+                    <p id="card-problem-text" class="text-xs sm:text-sm font-bold text-teal-900">Not selected yet.</p>
                   </div>
                 </div>
 
-                <!-- Full Mission Statement Sentence -->
+                <!-- Purpose statement assembled sentence -->
                 <div>
-                  <span class="text-xs font-extrabold text-slate-405 uppercase tracking-widest block mb-1">My Purpose Statement</span>
-                  <div id="card-purpose-sentence" class="bg-slate-900 text-yellow-300 p-4 rounded-xl text-sm leading-relaxed font-bold">
-                    Please complete Step 5 builder to generate your sentence fully.
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-1">Official Purpose Statement</span>
+                  <div id="card-purpose-sentence" class="bg-slate-900 text-yellow-300 p-4 rounded-2xl text-xs sm:text-sm leading-relaxed font-bold shadow-md">
+                    Complete Step 5 to lock in this statement!
                   </div>
                 </div>
 
-                <!-- Action Step -->
+                <!-- Action step -->
                 <div>
-                  <span class="text-xs font-extrabold text-slate-405 uppercase tracking-widest block mb-1">One small step I can take this term is</span>
-                  <div class="bg-teal-50 border border-teal-200 p-3 rounded-lg">
-                    <p id="card-action-text" class="text-xs sm:text-sm font-bold text-teal-905">💡 _________________________________________________</p>
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-1">Action step to start this term</span>
+                  <div class="bg-teal-50 border border-teal-100/60 p-3 rounded-xl">
+                    <p id="card-action-text" class="text-xs sm:text-sm font-bold text-teal-950">💡 _________________________________________________</p>
                   </div>
                 </div>
 
-                <!-- Creative Hand-drawn Sketch space -->
-                <div class="border border-slate-200 rounded-xl p-4 text-center bg-slate-50/50 mt-4">
-                  <span class="text-xs font-extrabold text-slate-405 uppercase tracking-widest block mb-2">My drawing: Me living out my purpose</span>
-                  <div class="border border-dashed border-slate-300 bg-white h-24 rounded-lg flex items-center justify-center">
-                    <p class="text-xs text-slate-400 font-medium">(Print this card out to draw yourself living your purpose here!)</p>
+                <!-- Custom visual drawing sketch area -->
+                <div class="border border-slate-200 rounded-2xl p-4 text-center bg-slate-50/40 mt-4">
+                  <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2">My Sketch: Me living out my purpose</span>
+                  <div class="border border-dashed border-slate-300 bg-white h-24 rounded-xl flex items-center justify-center">
+                    <p class="text-xs text-slate-400 font-semibold px-4">(Print this card to sketch yourself living your purpose here!)</p>
                   </div>
                 </div>
 
               </div>
             </div>
 
-            <!-- Print Card Controls -->
+            <!-- Print Summary Controls -->
             <div class="flex flex-wrap gap-3 justify-center pt-4 print:hidden">
               <button 
                 onclick="backToEdit()" 
-                class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-705 font-extrabold text-sm px-5 py-3 rounded-xl transition-all"
+                class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all shadow-xs"
               >
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                Back to edit
+                Modify Controls
               </button>
               <button 
                 onclick="window.print()" 
-                class="flex items-center gap-2 bg-teal-600 hover:bg-teal-750 active:scale-95 text-white font-extrabold text-sm px-6 py-3 rounded-xl shadow-sm transition-all"
+                class="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all"
               >
                 <i data-lucide="printer" class="w-4 h-4"></i>
-                Print / Save as PDF
+                Print Achievement Card
               </button>
             </div>
           </div>
 
         </div>
 
-        <!-- Checkpoint Navigation Footer Controls -->
-        <div id="screen-footer" class="border-t px-6 py-4 flex items-center justify-between print:hidden bg-slate-50 border-slate-100">
+        <!-- Footer navigation controls inside card -->
+        <div id="screen-footer" class="border-t px-6 py-4 flex items-center justify-between print:hidden bg-slate-50/50 border-slate-100">
           <button 
             id="prev-btn" 
             onclick="navigatePrev()" 
             disabled 
-            class="flex items-center gap-1.5 text-xs font-black tracking-wider uppercase px-4 py-2 rounded-lg transition-all text-slate-550 cursor-not-allowed opacity-50"
+            class="flex items-center gap-1.5 text-xs font-black tracking-wider uppercase px-4 py-2.5 rounded-xl transition-all text-slate-400 cursor-not-allowed opacity-50"
           >
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Previous Step
+            Previous Checkpoint
           </button>
 
           <div class="flex items-center gap-2">
-            <!-- Reset Button -->
+            <!-- Reset Button trigger -->
             <button 
               id="reset-btn" 
-              onclick="resetModule()" 
-              class="p-2 rounded-lg transition-all text-slate-400 hover:text-slate-600 hover:bg-slate-100" 
-              title="Reset Module"
+              onclick="showResetConfirmation()" 
+              class="p-2.5 rounded-xl transition-all text-slate-400 hover:text-slate-600 hover:bg-slate-100 border border-transparent hover:border-slate-200" 
+              title="Reset Expedition"
             >
-              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <i data-lucide="rotate-ccw" class="w-4.5 h-4.5"></i>
             </button>
 
-            <!-- Next Step Trigger -->
+            <!-- Next navigation trigger button -->
             <button 
               id="next-btn" 
               onclick="navigateNext()" 
-              class="flex items-center gap-1.5 bg-teal-600 hover:bg-teal-750 text-white text-xs font-black tracking-wider uppercase px-5 py-2.5 rounded-lg active:scale-95 transition-all shadow-sm"
+              class="flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-black tracking-wider uppercase px-5 py-2.5 rounded-xl active:scale-95 transition-all shadow-premium-sm"
             >
-              <span>Next Step</span>
+              <span>Next Checkpoint</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </div>
@@ -854,117 +955,136 @@
 
       </div>
 
-      <!-- Collapsible Teacher notes panel -->
-      <div id="teacher-notes-panel" class="hidden bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 md:p-6 space-y-3.5 shadow-sm animate-fadeIn print:hidden">
+      <!-- Facilitation Guide Panel -->
+      <div id="teacher-notes-panel" class="hidden bg-amber-50 border border-amber-200/80 rounded-2xl p-5 md:p-6 space-y-3.5 shadow-premium-sm animate-fadeIn print:hidden relative z-10">
         <div class="flex items-center justify-between border-b border-amber-200 pb-2">
           <div class="flex items-center gap-2">
             <i data-lucide="book-open" class="text-amber-700 w-5 h-5"></i>
-            <h3 class="font-black text-amber-900 uppercase tracking-wider text-xs md:text-sm">
-              Teacher Facilitation Notes — Step <span id="teacher-notes-step-num">1</span>
+            <h3 class="font-black text-amber-950 uppercase tracking-wider text-xs">
+              Teacher Guide — Checkpoint <span id="teacher-notes-step-num">1</span>
             </h3>
           </div>
-          <span class="text-xs font-black bg-amber-200/60 text-amber-900 px-2 py-0.5 rounded">SLS Tool Guide</span>
+          <span class="text-[10px] font-black bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-lg">SLS Tool Guide</span>
         </div>
 
-        <div id="teacher-notes-content" class="text-xs md:text-sm text-amber-800 space-y-3 font-medium">
-          <!-- JS Dynamic text content populated by step index -->
+        <div id="teacher-notes-content" class="text-xs text-amber-900 space-y-3 font-medium leading-relaxed">
+          <!-- Populated dynamically based on active step -->
         </div>
       </div>
     </div>
 
-    <!-- Right Column: Permanent Interactive Conversation Card Deck (4 Cols) -->
-    <div class="lg:col-span-4 rounded-2xl p-5 space-y-4 print:hidden border transition-colors duration-1000 bg-white border-slate-200/80 text-slate-800">
-      <div class="flex items-center gap-2 border-b pb-3 border-slate-100">
-        <i data-lucide="message-square" class="w-5 h-5 text-teal-500"></i>
+    <!-- Right Column: Expedition partner Logbook & Communicator (4 Cols) -->
+    <div class="lg:col-span-4 rounded-3xl p-5 space-y-4 print:hidden border transition-all duration-300 bg-white border-slate-200 text-slate-800 shadow-premium-sm relative z-10">
+      <div class="flex items-center gap-2 border-b pb-3 border-slate-105">
+        <i data-lucide="message-square" class="w-5 h-5 text-teal-600"></i>
         <div>
-          <h3 class="font-black text-sm tracking-wide font-sans">Purpose Conversation Deck</h3>
-          <p class="text-[10px] text-slate-405">Pair & Group Reflective Questions</p>
+          <h3 class="font-bold text-sm tracking-wide font-primary-bubble">Expedition Communicator</h3>
+          <p class="text-[10px] text-slate-400 font-semibold uppercase">Partner reflection cards</p>
         </div>
       </div>
 
-      <!-- Interactive Deck Tabs -->
-      <div class="flex flex-wrap gap-1 p-1 rounded-lg bg-slate-50" id="card-categories-tabs">
-        <!-- JS loaded categories -->
+      <!-- Category Tabs -->
+      <div class="flex flex-wrap gap-1 p-1 rounded-xl bg-slate-50" id="card-categories-tabs">
+        <!-- Loaded dynamically in JS -->
       </div>
 
-      <!-- Card Question display widget board -->
-      <div class="border rounded-xl p-5 min-h-[140px] flex flex-col justify-between relative overflow-hidden group bg-teal-50/40 border-teal-105">
-        <div id="deck-card-counter" class="absolute top-0 right-0 w-8 h-8 rounded-bl-xl flex items-center justify-center text-xs font-bold uppercase bg-teal-100 text-teal-705">
+      <!-- Interactive Question Card Display -->
+      <div class="border rounded-2xl p-5 min-h-[145px] flex flex-col justify-between relative overflow-hidden group bg-teal-50/20 border-teal-100 shadow-sm transition-all duration-300 hover:border-teal-300">
+        <div id="deck-card-counter" class="absolute top-0 right-0 w-8 h-8 rounded-bl-xl flex items-center justify-center text-xs font-bold uppercase bg-teal-100/80 text-teal-700">
           1/3
         </div>
 
         <div class="space-y-2">
-          <span id="deck-card-category-lbl" class="text-[10px] font-black tracking-widest text-teal-500 uppercase">
+          <span id="deck-card-category-lbl" class="text-[9px] font-black tracking-widest text-teal-605 uppercase">
             🏷️ Category: Values
           </span>
-          <p id="deck-card-text" class="text-sm font-bold leading-relaxed italic text-slate-700">
+          <p id="deck-card-text" class="text-xs sm:text-sm font-bold leading-relaxed italic text-slate-700">
             "What does being 'kind' mean to you in the classroom?"
           </p>
         </div>
 
-        <!-- deck pager -->
+        <!-- deck pagination -->
         <div class="flex justify-between items-center mt-4 pt-3 border-t border-teal-100/50">
-          <span class="text-[10px] text-slate-455 font-medium">Ask your partner! 🗣️</span>
+          <span class="text-[10px] text-slate-400 font-medium">Ask your trail partner! 🗣️</span>
           <div class="flex gap-1.5">
-            <button onclick="prevDeckCard()" class="p-1 rounded border transition-all bg-white border-slate-200 text-slate-655 hover:bg-slate-50">
+            <button type="button" onclick="prevDeckCard()" class="p-1 rounded-lg border transition-all bg-white border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-95">
               <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
             </button>
-            <button onclick="nextDeckCard()" class="p-1 rounded border transition-all bg-white border-slate-200 text-slate-655 hover:bg-slate-50">
+            <button type="button" onclick="nextDeckCard()" class="p-1 rounded-lg border transition-all bg-white border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-95">
               <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="p-3 rounded-xl border text-[11px] leading-relaxed flex gap-2 bg-slate-50 border-slate-200 text-slate-500">
+      <div class="p-3 rounded-xl border text-[11px] leading-relaxed flex gap-2 bg-slate-50 border-slate-200 text-slate-500 shadow-inner">
         <i data-lucide="help-circle" class="w-4 h-4 text-teal-500 shrink-0"></i>
-        <p><strong>Activity Tip:</strong> Use these cards in pairs or small groups. There is no single correct answer — just listen and enjoy finding out what is important to your friends!</p>
+        <p><strong>Activity Tip:</strong> Team up with a nearby partner. Ask each other these questions. Real heroes learn to listen well!</p>
       </div>
     </div>
 
   </main>
 
+  <!-- Custom Modal Box (No standard alert/confirm dialogs) -->
+  <div id="custom-confirm-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-premium-lg border border-slate-100 animate-popIn space-y-4">
+      <div class="flex items-center gap-3 text-coral-600">
+        <div class="p-2 bg-coral-50 rounded-xl"><i data-lucide="alert-triangle" class="w-6 h-6 text-coral-500"></i></div>
+        <h4 class="font-bold font-primary-bubble text-lg text-slate-855">Reset Trail?</h4>
+      </div>
+      <p class="text-xs text-slate-500 leading-relaxed font-semibold">
+        Are you sure you want to reset your choices? This will clear your camp progress and current purpose card fields.
+      </p>
+      <div class="flex gap-3 pt-2">
+        <button onclick="hideResetConfirmation()" class="flex-grow py-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-black uppercase tracking-wider transition-all">Cancel</button>
+        <button onclick="confirmReset()" class="flex-grow py-2.5 rounded-xl bg-coral-600 text-white hover:bg-coral-700 text-xs font-black uppercase tracking-wider transition-all shadow-sm">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ambient background cloud shapes supporting continuous guided environment theme -->
+  <div class="absolute bottom-12 left-6 w-36 h-20 bg-teal-50/15 rounded-full filter blur-xl pointer-events-none animate-slow-float-1"></div>
+  <div class="absolute top-1/3 right-10 w-40 h-24 bg-amber-100/10 rounded-full filter blur-xl pointer-events-none animate-slow-float-2"></div>
+  <div class="absolute bottom-1/3 left-1/3 w-32 h-16 bg-indigo-50/10 rounded-full filter blur-xl pointer-events-none animate-slow-float-3"></div>
+
   <!-- Page Footer -->
-  <footer class="bg-slate-100 border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-505 print:hidden">
+  <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-400 print:hidden relative z-10">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-      <span>© Student Learning Space. SLS Curriculum Alignment Project.</span>
+      <span>© Student Learning Space. SLS Primary Curriculum Alignment Initiative.</span>
       <div class="flex gap-4">
-        <span class="hover:underline cursor-pointer">Terms of Use</span>
-        <span class="hover:underline cursor-pointer">Privacy Policy</span>
+        <span class="hover:underline cursor-pointer">Trail Terms</span>
+        <span class="hover:underline cursor-pointer">Privacy guidelines</span>
       </div>
     </div>
   </footer>
 
-  <!-- Vanilla State & Interaction Script -->
   <script>
-    // State Variables
+    // Primary core variables state
     let currentStep = 1;
     let studentName = "";
     let showTeacherNotes = false;
     let unlockedBadges = [1];
-    let animateAvatar = false;
-    let encouragementText = "Every hero starts by choosing what matters to them.";
-    let launchParticles = false;
+    let encouragementText = "Your journey begins here. Let's find your unique compass!";
 
-    // STEP 1 State: Success Hook / Launch Pad
+    // STEP 1 state
     let selectedIssue = "";
     let customIssue = "";
     let proudOption = "";
     let successStem = "";
 
-    // STEP 2 State: Interests / Style Lab
+    // STEP 2 state
     let selectedStyles = []; // max 2
     let selectedActivity = "";
 
-    // STEP 3 State: Strengths & Values
+    // STEP 3 state
     let selectedStrengths = []; // max 2
     let selectedValues = []; // max 2
 
-    // STEP 4 State: Community Problem
+    // STEP 4 state
     let selectedProblem = "";
     let problemExplanation = "";
 
-    // STEP 5 State: Purpose Builder / WOW Mission Control states
+    // STEP 5 state
     let builderStyle = "";
     let builderStrength = "";
     let builderProblem = "";
@@ -972,71 +1092,76 @@
     let smallStepAction = "";
     let missionLockedIn = false;
 
-    // Conversation Cards state
+    // Deck configuration
     let currentCategory = "Values";
     let currentCardIndex = 0;
 
-    // Background tints matching step atmosphere (Soft off-white / light-mode tints consistently)
+    // Custom atmospheric landscape shapes and icons based on current step/scene
+    const ambientStepGraphics = {
+      1: `<div class="text-slate-200 font-sans text-[100px] font-black leading-none select-none">CAMP</div>`,
+      2: `<div class="text-slate-200 font-sans text-[100px] font-black leading-none select-none">LAB</div>`,
+      3: `<div class="text-slate-200 font-sans text-[100px] font-black leading-none select-none">SHIELD</div>`,
+      4: `<div class="text-slate-200 font-sans text-[100px] font-black leading-none select-none">SCOPE</div>`,
+      5: `<div class="text-slate-200 font-sans text-[100px] font-black leading-none select-none">CONTROL</div>`,
+      6: `<div class="text-slate-200 font-sans text-[100px] font-black leading-none select-none">HERO</div>`
+    };
+
+    // Ambient scene gradients for visual movement & atmospheric build-up
     const bgStepTints = [
-      "from-orange-50/40 via-amber-50/30 to-orange-100/20",     // Step 1: Launch Pad
-      "from-sky-50/40 via-blue-50/30 to-teal-50/20",             // Step 2: Style Lab
-      "from-indigo-50/40 via-indigo-50/30 to-purple-50/20",     // Step 3: Power Chamber
-      "from-emerald-50/40 via-emerald-50/30 to-teal-50/20",     // Step 4: World Screen
-      "from-teal-50/40 via-teal-50/30 to-emerald-50/20",        // Step 5: Mission Control
-      "from-teal-50/40 via-teal-50/30 to-emerald-50/20"         // Step 6: Final Card Celebration
+      "from-orange-50/10 via-amber-50/5 to-teal-50/5",      // Step 1: Launch Pad Starting Camp
+      "from-sky-50/10 via-teal-50/5 to-emerald-50/5",        // Step 2: Discovery Style Lab
+      "from-indigo-50/10 via-slate-50/5 to-teal-50/5",       // Step 3: Superpower Chamber
+      "from-emerald-50/10 via-teal-50/5 to-slate-50/5",      // Step 4: World Observatory
+      "from-teal-50/10 via-slate-50/5 to-teal-50/5",         // Step 5: Mission Control Room
+      "from-teal-50/15 via-emerald-50/10 to-white"           // Step 6: Summary Destination Card
     ];
 
-    // Static Constant Lists
     const stylesList = [
-      { key: "Hands-on Helper", title: "Hands-on Helper (Realistic)", desc: "I like making, fixing, or building things.", phrase: "I like making things" },
-      { key: "Curious Thinker", title: "Curious Thinker (Investigative)", desc: "I like solving puzzles and finding out how things work.", phrase: "I like solving puzzles" },
-      { key: "Creative Maker", title: "Creative Maker (Artistic)", desc: "I like drawing, designing, or creating stories and videos.", phrase: "I like designing" },
-      { key: "Friendly Supporter", title: "Friendly Supporter (Social)", desc: "I like helping and caring for people.", phrase: "I like helping people" },
-      { key: "Organiser", title: "Organiser (Conventional)", desc: "I like planning, arranging, and keeping things neat.", phrase: "I like arranging things" },
-      { key: "Leader", title: "Leader (Enterprising)", desc: "I like leading others and sharing ideas.", phrase: "I like leading others" }
+      { key: "Hands-on Helper", title: "Hands-on Helper (Realistic)", desc: "I like making, fixing, or building items.", phrase: "I enjoy tactile creation" },
+      { key: "Curious Thinker", title: "Curious Thinker (Investigative)", desc: "I like solving puzzles and asking deep questions.", phrase: "I enjoy solving puzzles" },
+      { key: "Creative Maker", title: "Creative Maker (Artistic)", desc: "I like drawing, designing, and telling stories.", phrase: "I enjoy creative storytelling" },
+      { key: "Friendly Supporter", title: "Friendly Supporter (Social)", desc: "I like listening, caring, and encouraging others.", phrase: "I enjoy helping classmates" },
+      { key: "Organiser", title: "Organiser (Conventional)", desc: "I like arranging, categorising, and planning details.", phrase: "I enjoy structural order" },
+      { key: "Leader", title: "Leader (Enterprising)", desc: "I like taking the initiative and guiding teammates.", phrase: "I enjoy directing teams" }
     ];
 
     const strengthsList = ["Kind", "Brave", "Curious", "Hard-working", "Creative", "Calm", "Friendly", "Honest"];
     const valuesList = ["Family", "Friends", "Fairness", "Helping others", "Protecting nature", "Learning new things"];
 
     const problemsList = [
-      { key: "Healthy lives", title: "Healthy lives", sub: "People can be healthy in body and mind.", moreText: "Let's encourage clean habits, safe playing grounds, healthy school canteens, and speaking out when friends feel down." },
-      { key: "Good education for all", title: "Good education for all", sub: "Every child can learn and feel safe in school.", moreText: "Make sure classmate circles are friendly, help friends with hard homework, and create clean, cozy reading corners." },
-      { key: "Protecting nature and animals", title: "Protecting nature and animals", sub: "Our land, sea, and animals are safe.", moreText: "Recycle plastics, build bird feeders, look after school gardens, and support organic forest habitats." },
-      { key: "No one left out", title: "No one left out", sub: "Everyone is treated fairly and kindly.", moreText: "Help quiet pupils fit in, invite new classmates to play games, and design group lessons where all opinions are listened to." }
+      { key: "Healthy lives", title: "Healthy lives", sub: "Ensuring classmates and communities are healthy in body and mind." },
+      { key: "Good education for all", title: "Good education for all", sub: "Making sure every child feels supported and safe to learn." },
+      { key: "Protecting nature and animals", title: "Protecting nature and animals", sub: "Sustaining green land, clean oceans, and safe habitats." },
+      { key: "No one left out", title: "No one left out", sub: "Ensuring all friends are treated with dignity and fairness." }
     ];
 
     const stepHeadersMap = {
-      1: { title: "Success & Me", badge: "Checkpoint 1 of 6" },
-      2: { title: "My Interests", badge: "Checkpoint 2 of 6" },
-      3: { title: "Strengths & Values", badge: "Checkpoint 3 of 6" },
-      4: { title: "Problems I Care About", badge: "Checkpoint 4 of 6" },
-      5: { title: "Purpose & Action", badge: "Checkpoint 5 of 6" },
-      6: { title: "My Purpose Card", badge: "Checkpoint 6 of 6" }
+      1: { title: "Starting Camp Launch Pad", badge: "Checkpoint 1 of 6" },
+      2: { title: "Discovery Style Lab", badge: "Checkpoint 2 of 6" },
+      3: { title: "Superpower Chamber", badge: "Checkpoint 3 of 6" },
+      4: { title: "World Observatory", badge: "Checkpoint 4 of 6" },
+      5: { title: "Mission Control Room", badge: "Checkpoint 5 of 6" },
+      6: { title: "Final Purpose Card", badge: "Checkpoint 6 of 6" }
     };
 
     const teacherNotesMap = {
-      1: `<strong>Objective:</strong> Help pupils see that success is more than marks and includes character and contribution.<br/><br/>
-          <strong>Suggested prompt:</strong> “Turn to your partner and share: What is one way you can be ‘successful’ even without talking about exams?”<br/><br/>
-          <strong>Support idea:</strong> Allow pupils to answer orally while you scribe one key sentence for them, if they find writing difficult.`,
-      2: `<strong>Objective:</strong> Help pupils notice their interests and how they already use them in daily life.<br/><br/>
-          <strong>Suggested prompt:</strong> “Think of one time this week when you used one of these styles. What were you doing?”<br/><br/>
-          <strong>Support idea:</strong> Pupils can point to or say their choices while you click for them.`,
-      3: `<strong>Objective:</strong> Give pupils language to talk about their strengths and values.<br/><br/>
-          <strong>Suggested prompt:</strong> “Which word fits you today? Which word would you like to grow in this year?”<br/><br/>
-          <strong>Support idea:</strong> Let pupils circle words on a printed copy or point on screen; you can key in their choices.`,
-      4: `<strong>Objective:</strong> Connect pupils’ values to a simple community or world need.<br/><br/>
-          <strong>Suggested prompt:</strong> “Have you seen this problem in school, at home, or on the news? How did it make you feel?”<br/><br/>
-          <strong>Support idea:</strong> Accept oral explanations and summarise them in one short sentence in the box.`,
-      5: `<strong>Objective:</strong> Combine style, strength, problem, and hoped-for impact into one sentence.<br/><br/>
-          <strong>Suggested prompts:</strong><br/>
-          • “Read your mission sentence softly to yourself. Does it sound like you?”<br/>
-          • “Is there one word you want to change to make it sound even more like you?”<br/>
-          • “Turn to a partner and read your mission. What part are you most proud of?”<br/><br/>
-          <strong>Support:</strong> Allow pupils to use idea chips, read aloud, and receive help with wording while keeping their meaning.`,
-      6: `<strong>Objective:</strong> Consolidate learning in a simple, shareable “purpose card”.<br/><br/>
-          <strong>Suggested prompt:</strong> “Ask 1–2 pupils (only if they are comfortable) to share their purpose statement with the class.”<br/><br/>
-          <strong>Support idea:</strong> Encourage teachers to keep these cards in student portfolios or display a few (with consent) as examples.`
+      1: `<strong>Objective:</strong> Guide pupils in starting camp. Frame success beyond tests—focus on empathy, character, and school friendship.<br/><br/>
+          <strong>Suggested Prompt:</strong> “Think about a friend who did something nice this week. How did that make our class better?”<br/><br/>
+          <strong>SLS Tip:</strong> Display class choices on an interactive dashboard if available to spot common student missions.`,
+      2: `<strong>Objective:</strong> Help pupils recognize their interest styles (Realistic, Artistic, etc.) through structured play.<br/><br/>
+          <strong>Suggested Prompt:</strong> “How can two different styles work together to build a group project?”<br/><br/>
+          <strong>SLS Tip:</strong> Encourage kids to pair up based on contrasting styles to explore cooperative learning.`,
+      3: `<strong>Objective:</strong> Help pupils label their core values and active strengths.<br/><br/>
+          <strong>Suggested Prompt:</strong> “Why does your shield need both a strength and a core value to stay powered up?”<br/><br/>
+          <strong>SLS Tip:</strong> Ask pupils to write down their chosen superpowers inside their SLS learning portfolios.`,
+      4: `<strong>Objective:</strong> Align personal strengths with tangible, real-world community challenges.<br/><br/>
+          <strong>Suggested Prompt:</strong> “Which challenge have you noticed the most in your daily life or on the news?”<br/><br/>
+          <strong>SLS Tip:</strong> Encourage students to write down brief details about why their selected issue feels important.`,
+      5: `<strong>Objective:</strong> Combine styles, strengths, and goals into a unified Purpose Statement sentence.<br/><br/>
+          <strong>Suggested Prompt:</strong> “Softly read your statement to yourself. Does this feel like your true compass?”<br/><br/>
+          <strong>SLS Tip:</strong> Use student statements for shared group feedback or as portfolio certificates.`,
+      6: `<strong>Objective:</strong> Celebrate and award pupils their printable Expedition Card.<br/><br/>
+          <strong>Suggested Prompt:</strong> “Have students print their physical cards and draw themselves in the sketch box!”`
     };
 
     const conversationDeck = {
@@ -1073,42 +1198,33 @@
       ]
     };
 
-    // On Load Initialisation
     window.addEventListener("DOMContentLoaded", () => {
-      // Re-trigger SVG Lucide icons
       lucide.createIcons();
 
-      // Initialise step 1 cards
+      // Initiate default lists
       buildStep1Tiles();
       buildProudMCQ();
-
-      // Initialise Step 2 Style cards & Activity Chips
       buildStyleDeck();
       buildActivityChips();
-
-      // Initialise Step 3
       buildPowerChamberWalls();
-
-      // Initialise Step 4
       buildWorldProblems();
-
-      // Conversation Deck Tab Loader
       buildCardCategories();
 
-      // Load name listeners
+      // Sync name inputs
       const nameInput = document.getElementById("student-name-input");
       nameInput.addEventListener("input", (e) => {
         studentName = e.target.value;
-        document.getElementById("card-name-field").innerText = studentName ? studentName : "_______________________";
+        const nameField = document.getElementById("card-name-field");
+        if (nameField) nameField.innerText = studentName ? studentName : "_______________________";
       });
 
-      // Step 1 optional stem input
+      // Sync Success stem inputs
       const stemInput = document.getElementById("success-stem-input");
       stemInput.addEventListener("input", (e) => {
         successStem = e.target.value;
       });
 
-      // Toggle Notes
+      // Setup notes toggle
       const notesBtn = document.getElementById("toggle-teacher-notes");
       notesBtn.addEventListener("click", () => {
         showTeacherNotes = !showTeacherNotes;
@@ -1128,7 +1244,7 @@
         lucide.createIcons();
       });
 
-      // Setup Step 5 Inputs listeners
+      // Bind dynamic change listeners for builder
       document.getElementById("builder-style-select").addEventListener("change", syncBuilderFromDropdowns);
       document.getElementById("builder-strength-select").addEventListener("change", syncBuilderFromDropdowns);
       document.getElementById("builder-problem-select").addEventListener("change", syncBuilderFromDropdowns);
@@ -1138,47 +1254,44 @@
       updateStepUI();
     });
 
-    // Helper: Set encouragement text & sync globally
     function setEncouragementText(txt) {
       encouragementText = txt;
       const el = document.getElementById("encouragement-text");
-      if (el) {
-        el.innerText = txt;
-      }
+      if (el) el.innerText = txt;
     }
 
-    // Step 1: Tile builder
+    // STEP 1 Dynamic generator
     function buildStep1Tiles() {
       const wrapper = document.getElementById("step1-tiles-container");
       wrapper.innerHTML = "";
       const items = [
-        { keyword: "Healthy Food 🍎", title: "Everyone can afford healthy food.", description: "Helping food banks, reducing waste, and ensuring families have nutritious dinners." },
-        { keyword: "Kind Friends 👥", title: "No one in my class feels lonely.", description: "Welcoming quiet pupils, sitting with lonely classmates, and creating group activities." },
-        { keyword: "Loved Animals 🐾", title: "Animals are safe and loved.", description: "Protecting endangered wildlife, adopting pets, and supporting organic cruelty-free spaces." },
-        { keyword: "Green Earth 🌍", title: "Our Earth is clean and green.", description: "Picking up plastic, recycling items, and planting small seeds to help nature breathe." },
-        { keyword: "Education 📚", title: "Every child can study and learn.", description: "Sharing educational supplies, helping a junior read, and setting up learning corners." },
-        { keyword: "Safe Feelings 💬", title: "People can talk about feelings safely.", description: "Listening carefully when friends feel sad and being an encouraging counselor." },
-        { keyword: "Neighbours 🏡", title: "Neighbours look out for one another.", description: "Helping elderly neighbors, delivering community goods, and smiling down the hallway." }
+        { keyword: "Affordable Food 🍎", title: "Everyone has access to healthy food.", description: "Helping food kitchens, avoiding waste, and supporting local nutrition programs." },
+        { keyword: "Classroom Unity 👥", title: "No classmate feels lonely or left out.", description: "Inviting lonely peers to play, learning active listening, and being friendly." },
+        { keyword: "Animal Safety 🐾", title: "Animals are protected and loved.", description: "Caring for neighborhood ecosystems, local pets, and supporting wildlife rescue." },
+        { keyword: "Clean Earth 🌍", title: "Nature and community areas are green.", description: "Recycling items carefully, reducing plastic, and respecting local green gardens." },
+        { keyword: "Learning for All 📚", title: "Every junior student is helped to read.", description: "Sharing textbook items, peer-tutoring, and creating library corners." },
+        { keyword: "Safe Emotions 💬", title: "Classmates feel safe discussing feelings.", description: "Showing deep empathy and keeping an encouraging conversational attitude." }
       ];
 
       items.forEach((item) => {
         const isSelected = selectedIssue === item.title;
-        const tile = document.createElement("div");
-        tile.className = `p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer flex flex-col gap-2 relative overflow-hidden ${
+        const tile = document.createElement("button");
+        tile.type = "button";
+        tile.className = `p-4 rounded-2xl border-2 text-left card-adventure flex flex-col gap-2 relative overflow-hidden outline-none ${
           isSelected 
-            ? 'bg-orange-55 border-orange-500 text-slate-900 shadow-md transform scale-[1.01]' 
-            : 'bg-white border-slate-200 hover:border-slate-355 text-slate-655 hover:scale-[1.01]'
+            ? 'bg-teal-50/70 border-teal-500 text-slate-900 shadow-premium-sm scale-102 font-bold' 
+            : 'bg-white border-slate-200 hover:border-teal-350 text-slate-600'
         }`;
         tile.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="font-extrabold text-sm text-slate-800">${item.keyword}</span>
-            ${isSelected ? '<span class="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 animate-bounce">✓</span>' : ''}
+          <div class="flex items-center justify-between w-full">
+            <span class="font-extrabold text-xs sm:text-sm text-teal-950">${item.keyword}</span>
+            ${isSelected ? '<span class="w-5 h-5 rounded-full bg-teal-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0 animate-bounce">✓</span>' : ''}
           </div>
-          <p class="text-xs font-semibold text-slate-505 leading-normal">
-            ${isSelected ? item.title : "Click to view full hero mission description..."}
+          <p class="text-[11px] sm:text-xs font-semibold text-slate-500 leading-normal">
+            ${isSelected ? item.title : "Click to view full trail detail..."}
           </p>
           ${isSelected ? `
-            <p class="text-[11px] text-orange-705 bg-orange-100/40 p-2 rounded-lg mt-1 border border-orange-200/30 animate-fadeIn">
+            <p class="text-[10px] text-teal-950 bg-teal-100/50 p-2.5 rounded-xl mt-1 border border-teal-200/20 animate-fadeIn font-semibold leading-relaxed">
               ${item.description}
             </p>
           ` : ''}
@@ -1186,31 +1299,32 @@
         tile.onclick = () => {
           selectedIssue = item.title;
           customIssue = "";
-          triggerLaunchEffect();
+          triggerCheckpointReward();
           buildStep1Tiles();
           validateStepCompletion();
         };
         wrapper.appendChild(tile);
       });
 
-      // Custom Input Tile
+      // Custom option
       const isCustomSelected = selectedIssue === "Something else";
-      const customTile = document.createElement("div");
-      customTile.className = `p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer flex flex-col gap-2 relative ${
+      const customTile = document.createElement("button");
+      customTile.type = "button";
+      customTile.className = `p-4 rounded-2xl border-2 text-left card-adventure flex flex-col gap-2 relative outline-none ${
         isCustomSelected 
-          ? 'bg-orange-55 border-orange-500 text-slate-900 shadow-md' 
-          : 'bg-white border-slate-200 hover:border-slate-355 text-slate-655'
+          ? 'bg-teal-50/70 border-teal-500 text-slate-900 shadow-premium-sm scale-102' 
+          : 'bg-white border-slate-200 hover:border-teal-350 text-slate-600'
       }`;
       customTile.innerHTML = `
-        <span class="font-extrabold text-sm text-slate-855">Something else 📝</span>
-        <p class="text-xs text-slate-505 font-semibold">Define your own custom care target...</p>
+        <span class="font-extrabold text-xs sm:text-sm text-teal-950">Something else 📝</span>
+        <p class="text-[11px] sm:text-xs text-slate-500 font-semibold">Write your own focus topic below...</p>
         ${isCustomSelected ? `
           <input
             type="text"
             id="custom-issue-input"
-            placeholder="Type what you care about..."
+            placeholder="Type your own custom interest here..."
             value="${customIssue}"
-            class="bg-white border border-slate-300 rounded px-2.5 py-1 mt-1 text-xs focus:ring-2 focus:ring-orange-400 focus:outline-none text-slate-800 font-semibold w-full"
+            class="bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 mt-1 text-xs focus:ring-2 focus:ring-teal-400 focus:outline-none text-slate-800 font-semibold w-full outline-none shadow-xs"
           />
         ` : ''}
       `;
@@ -1233,18 +1347,18 @@
       const container = document.getElementById("proud-mcq-container");
       container.innerHTML = "";
       const options = [
-        "Getting really good at a skill I love.",
-        "Helping people and making my school kinder.",
-        "Creating or fixing things to protect the Earth.",
-        "Leading a team and helping everyone work together."
+        "Honing an active craft or skill that I love.",
+        "Providing active community support to make environments kinder.",
+        "Fixing technical tools to preserve and protect natural resources.",
+        "Formulating projects to help classmates work in unison."
       ];
       options.forEach((opt) => {
         const isSelected = proudOption === opt;
         const label = document.createElement("label");
-        label.className = `flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+        label.className = `flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all ${
           isSelected 
-            ? 'bg-orange-50/30 border-orange-400 scale-[1.01]' 
-            : 'bg-white border-slate-200 hover:bg-slate-50'
+            ? 'bg-teal-50/40 border-teal-400 scale-[1.01] shadow-xs' 
+            : 'bg-white border-slate-200 hover:bg-slate-50/50'
         }`;
         label.innerHTML = `
           <input 
@@ -1252,13 +1366,13 @@
             name="proud_mcq" 
             value="${opt}"
             ${isSelected ? 'checked' : ''}
-            class="mt-1 accent-orange-600"
+            class="mt-1 accent-teal-600 outline-none"
           />
-          <span class="text-sm text-slate-705 font-semibold">${opt}</span>
+          <span class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">${opt}</span>
         `;
         label.onclick = () => {
           proudOption = opt;
-          triggerLaunchEffect();
+          triggerCheckpointReward();
           buildProudMCQ();
           validateStepCompletion();
         };
@@ -1266,19 +1380,16 @@
       });
     }
 
-    function triggerLaunchEffect() {
+    function triggerCheckpointReward() {
       if (selectedIssue && proudOption) {
-        launchParticles = true;
-        setEncouragementText("Launch complete! You’ve chosen something your heart cares about.");
+        setEncouragementText("Camp checkpoint unlocked! You are setting a beautiful course.");
         const sparkles = document.getElementById("sparkle-layer");
         sparkles.classList.remove("hidden");
-        setTimeout(() => {
-          sparkles.classList.add("hidden");
-        }, 2000);
+        setTimeout(() => { sparkles.classList.add("hidden"); }, 2000);
       }
     }
 
-    // Step 2: Style Deck & Activities
+    // STEP 2 Dynamic generator
     function buildStyleDeck() {
       const container = document.getElementById("style-deck-container");
       container.innerHTML = "";
@@ -1286,10 +1397,10 @@
         const isSelected = selectedStyles.includes(styleObj.key);
         const card = document.createElement("button");
         card.type = "button";
-        card.className = `w-full text-left p-3.5 rounded-xl border-2 transition-all duration-300 flex items-start gap-4 ${
+        card.className = `w-full text-left p-4 rounded-2xl border-2 transition-all duration-300 flex items-start gap-4 outline-none ${
           isSelected 
-            ? 'bg-sky-50 border-sky-400 text-slate-900 shadow-sm scale-102 font-bold' 
-            : 'bg-white border-slate-200 hover:border-slate-350 text-slate-655 hover:scale-101'
+            ? 'bg-teal-50/70 border-teal-500 text-slate-950 shadow-premium-sm scale-102 font-bold' 
+            : 'bg-white border-slate-200 hover:border-teal-350 text-slate-600 hover:scale-101'
         }`;
         
         card.onclick = () => {
@@ -1307,14 +1418,13 @@
           validateStepCompletion();
         };
 
-        // Render matching icon dynamically
         const iconHTML = getStyleIconHTML(styleObj.key);
         card.innerHTML = `
           <div class="shrink-0 mt-0.5">${iconHTML}</div>
           <div class="flex flex-col pr-6">
-            <span class="font-extrabold text-sm">${styleObj.title}</span>
-            <span class="text-[10px] text-slate-405 font-bold">${styleObj.desc}</span>
-            ${isSelected ? `<span class="text-xs text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded mt-2.5 font-bold self-start animate-fadeIn">✨ ${styleObj.phrase}</span>` : ''}
+            <span class="font-extrabold text-xs sm:text-sm text-slate-800">${styleObj.title}</span>
+            <span class="text-[10px] text-slate-400 font-bold leading-relaxed">${styleObj.desc}</span>
+            ${isSelected ? `<span class="text-[10px] text-teal-850 bg-teal-100 px-2.5 py-0.5 rounded-lg mt-2.5 font-bold self-start animate-fadeIn">✨ ${styleObj.phrase}</span>` : ''}
           </div>
         `;
         container.appendChild(card);
@@ -1325,41 +1435,40 @@
       const labSelected = document.getElementById("lab-selected-styles");
       labSelected.innerHTML = "";
       if (selectedStyles.length === 0) {
-        labSelected.innerHTML = `<p class="text-xs text-slate-400 italic">Select up to two hero styles from the left deck to view lab results...</p>`;
+        labSelected.innerHTML = `<p class="text-[11px] text-slate-400 italic leading-relaxed">Choose up to 2 exploratory styles from the deck to analyze...</p>`;
       } else {
         selectedStyles.forEach((style) => {
           const badge = document.createElement("div");
-          badge.className = "bg-white p-2.5 rounded-xl border border-sky-200 flex items-center gap-2.5 shadow-xs animate-popIn";
+          badge.className = "bg-white p-2.5 rounded-xl border border-teal-200 flex items-center gap-2.5 shadow-xs animate-popIn";
           badge.innerHTML = `
-            <div class="bg-sky-50 p-1 rounded">${getStyleIconHTML(style, "w-6 h-6")}</div>
-            <span class="text-xs font-black text-sky-900">${style}</span>
+            <div class="bg-teal-50 p-1 rounded">${getStyleIconHTML(style, "w-6 h-6")}</div>
+            <span class="text-[11px] font-black text-teal-950">${style}</span>
           `;
           labSelected.appendChild(badge);
         });
       }
 
       if(selectedStyles.length === 2) {
-        setEncouragementText("Well done! You’ve found two of your hero styles.");
+        setEncouragementText("Discovery styles mapped! Your profile is ready for analysis.");
       }
     }
 
     function buildActivityChips() {
       const container = document.getElementById("activity-chips-container");
       container.innerHTML = "";
-      const acts = ["Sports or games", "Art or music", "Coding or technology", "Helping at home", "Helping in school"];
+      const acts = ["Art or Design", "Coding or Science", "Coaching or Mentoring", "Writing stories", "Community help"];
       acts.forEach((act) => {
         const isSelected = selectedActivity === act;
         const chip = document.createElement("button");
         chip.type = "button";
-        chip.className = `p-2 rounded-lg text-[10px] font-extrabold text-center transition-all ${
+        chip.className = `p-2 rounded-lg text-[10px] font-extrabold text-center transition-all outline-none ${
           isSelected 
-            ? 'bg-sky-600 text-white shadow-sm' 
-            : 'bg-white border border-slate-200 text-slate-655 hover:bg-slate-50'
+            ? 'bg-teal-650 text-white shadow-xs' 
+            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
         }`;
         chip.innerText = act;
         chip.onclick = () => {
           selectedActivity = act;
-          setEncouragementText("This shows how your style appears in real life.");
           buildActivityChips();
           validateStepCompletion();
         };
@@ -1367,7 +1476,7 @@
       });
     }
 
-    // Dynamic icon getter HTML string fallback
+    // SVG icon retrieval matching interest profiles
     function getStyleIconHTML(styleKey, sizeClass = "w-8 h-8") {
       const key = styleKey.toLowerCase();
       if (key.includes('hands-on helper')) {
@@ -1391,60 +1500,7 @@
       return "";
     }
 
-    // Dynamic problem icon getter HTML string helper
-    function getProblemIcon(problemKey, sizeClass = "w-9 h-9") {
-      switch (problemKey) {
-        case 'Healthy lives':
-          return `
-            <svg class="${sizeClass} text-rose-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path d="M12 21 C12 21, 3.5 14, 3.5 9 C3.5 6, 5.5 3.5, 8.5 3.5 C10.5 3.5, 11.5 4.5, 12 5 C12.5 4.5, 13.5 3.5, 15.5 3.5 C18.5 3.5, 20.5 6, 20.5 9 C20.5 14, 12 21, 12 21 Z" fill="#ffe4e6" stroke="currentColor" />
-              <path d="M9.5 8.5 Q12 11.5, 14.5 8.5" stroke="currentColor" stroke-linecap="round" />
-              <path d="M18 5.5 H21 M19.5 4 V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          `;
-        case 'Good education for all':
-          return `
-            <svg class="${sizeClass} text-amber-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path d="M12 19.5 C8 19.5, 4.5 17.5, 2 16.5 V5 C4.5 6, 8 7.5, 12 7.5 C16 7.5, 19.5 6, 22 5 V16.5 C19.5 17.5, 16 19.5, 12 19.5 Z" fill="#fef3c7" stroke="currentColor" />
-              <line x1="12" y1="7.5" x2="12" y2="19.5" stroke="currentColor" />
-              <circle cx="12" cy="7.5" r="2.5" fill="#fef3c7" stroke="currentColor" />
-              <line x1="12" y1="10" x2="12" y2="11.5" stroke="currentColor" stroke-width="1.5" />
-              <line x1="9.5" y1="5" x2="8.5" y2="4.5" stroke="currentColor" stroke-linecap="round" />
-              <line x1="14.5" y1="5" x2="15.5" y2="4.5" stroke="currentColor" stroke-linecap="round" />
-              <line x1="12" y1="4" x2="12" y2="3.2" stroke="currentColor" stroke-linecap="round" />
-            </svg>
-          `;
-        case 'Protecting nature and animals':
-          return `
-            <svg class="${sizeClass} text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="9" stroke="currentColor" fill="#e2fcf7" />
-              <path d="M4 11 c1 -1 3.5 0 4 2.5 c.5 1.5 2 1.5 3 0 c1 -1.5 1.5 -3 3.5 -3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-              <path d="M13 14 C13 9.5, 21.5 9.5, 21.5 14 C21.5 18.5, 13 21, 13 14 Z" fill="#d1fae5" stroke="currentColor" stroke-width="1.5" />
-              <circle cx="15.5" cy="14" r="1" fill="currentColor" stroke="none" />
-              <circle cx="17" cy="12.5" r="1" fill="currentColor" stroke="none" />
-              <circle cx="18.5" cy="14" r="1" fill="currentColor" stroke="none" />
-              <ellipse cx="17" cy="16" rx="1.8" ry="1.2" fill="currentColor" stroke="none" />
-            </svg>
-          `;
-        case 'No one left out':
-          return `
-            <svg class="${sizeClass} text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <rect x="1" y="1" width="22" height="22" rx="4" fill="#e0e7ff" stroke="none" />
-              <circle cx="6" cy="9" r="2" stroke="currentColor" fill="none" />
-              <path d="M3 16 C3 12, 9 12, 9 16" stroke="currentColor" stroke-linecap="round" />
-              <circle cx="12" cy="7.5" r="2" stroke="currentColor" fill="none" />
-              <path d="M8.5 14.5 C8.5 11, 15.5 11, 15.5 14.5" stroke="currentColor" stroke-linecap="round" />
-              <circle cx="18" cy="9" r="2" stroke="currentColor" fill="none" />
-              <path d="M15 16 C15 12, 21 12, 21 16" stroke="currentColor" stroke-linecap="round" />
-              <path d="M7.5 13 H10.5 M13.5 13 H16.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-            </svg>
-          `;
-        default:
-          return "";
-      }
-    }
-
-    // Step 3: Superpower Chamber Word Wall & Stems
+    // STEP 3 Dynamic generator
     function buildPowerChamberWalls() {
       const strengthsContainer = document.getElementById("strengths-wall");
       strengthsContainer.innerHTML = "";
@@ -1452,10 +1508,10 @@
         const isChosen = selectedStrengths.includes(strength);
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = `px-4 py-2.5 rounded-full font-bold text-xs transition-all active:scale-95 ${
+        btn.className = `px-4 py-2.5 rounded-xl font-bold text-xs transition-all active:scale-95 outline-none ${
           isChosen 
-            ? 'bg-teal-55 text-white border-2 border-white shadow-md' 
-            : 'bg-white border border-slate-200 text-slate-650 hover:bg-slate-50'
+            ? 'bg-teal-600 text-white border-2 border-white shadow-md' 
+            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-xs'
         }`;
         btn.innerText = isChosen ? `💖 ${strength}` : strength;
         btn.onclick = () => {
@@ -1481,10 +1537,10 @@
         const isChosen = selectedValues.includes(val);
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = `px-4 py-2.5 rounded-full font-bold text-xs transition-all active:scale-95 ${
+        btn.className = `px-4 py-2.5 rounded-xl font-bold text-xs transition-all active:scale-95 outline-none ${
           isChosen 
-            ? 'bg-indigo-500 text-white border-2 border-white shadow-md' 
-            : 'bg-white border border-slate-200 text-slate-655 hover:bg-slate-50'
+            ? 'bg-teal-700 text-white border-2 border-white shadow-md' 
+            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-xs'
         }`;
         btn.innerText = isChosen ? `⭐ ${val}` : val;
         btn.onclick = () => {
@@ -1509,11 +1565,11 @@
       const strengthsStation = document.getElementById("station-strengths");
       strengthsStation.innerHTML = "";
       if (selectedStrengths.length === 0) {
-        strengthsStation.innerHTML = `<span class="text-xs text-slate-400 italic">Select strengths to fill station...</span>`;
+        strengthsStation.innerHTML = `<span class="text-xs text-slate-400 italic">Strengths wall unselected...</span>`;
       } else {
         selectedStrengths.forEach((s) => {
           strengthsStation.innerHTML += `
-            <span class="bg-teal-55 text-teal-900 text-[11px] font-black px-3 py-1 rounded-full shadow-xs animate-popIn">
+            <span class="bg-teal-50 text-teal-900 text-[11px] font-black px-3 py-1.5 rounded-xl border border-teal-200 shadow-xs animate-popIn">
               ⚡ ${s}
             </span>
           `;
@@ -1523,41 +1579,36 @@
       const valuesStation = document.getElementById("station-values");
       valuesStation.innerHTML = "";
       if (selectedValues.length === 0) {
-        valuesStation.innerHTML = `<span class="text-xs text-slate-400 italic">Select values to fill station...</span>`;
+        valuesStation.innerHTML = `<span class="text-xs text-slate-400 italic">Values wall unselected...</span>`;
       } else {
         selectedValues.forEach((v) => {
           valuesStation.innerHTML += `
-            <span class="bg-indigo-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-xs animate-popIn">
+            <span class="bg-teal-600 text-white text-[11px] font-black px-3 py-1.5 rounded-xl border border-teal-500 shadow-xs animate-popIn">
               💎 ${v}
             </span>
           `;
         });
       }
 
-      // Sentence Stems sync
+      // Sync inputs and previews
       document.getElementById("stem-strength-1").innerText = selectedStrengths[0] ? selectedStrengths[0] : "______";
       document.getElementById("stem-strength-2").innerText = selectedStrengths[1] ? selectedStrengths[1] : "______";
       document.getElementById("stem-value-1").innerText = selectedValues[0] ? selectedValues[0] : "______";
 
-      // Brighten energy ring once all 4 items chosen
+      // Toggle energetic glowing effects on superpower shields
       const ring = document.getElementById("energy-ring");
       const panel = document.getElementById("superpower-panel");
       if (selectedStrengths.length === 2 && selectedValues.length === 2) {
         ring.classList.add("opacity-100", "brightness-110", "animate-pulse");
-        panel.classList.remove("border-slate-150");
-        panel.classList.add("border-teal-400", "shadow-md", "scale-101");
-        setEncouragementText("These show what your heart looks after.");
+        panel.className = "relative z-10 bg-white border border-teal-400 rounded-2xl p-5 space-y-4 shadow-md h-full flex flex-col justify-between scale-[1.01] transition-all";
+        setEncouragementText("Superpowers locked! Your trail profile is fully fortified.");
       } else {
         ring.classList.remove("opacity-100", "brightness-110", "animate-pulse");
-        panel.classList.add("border-slate-150");
-        panel.classList.remove("border-teal-400", "shadow-md", "scale-101");
-        if (selectedStrengths.length === 2) {
-          setEncouragementText("These are strong superpowers to grow.");
-        }
+        panel.className = "relative z-10 bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-xs h-full flex flex-col justify-between transition-all";
       }
     }
 
-    // Step 4: World problems grid
+    // STEP 4 Dynamic generator
     function buildWorldProblems() {
       const container = document.getElementById("world-problems-grid");
       container.innerHTML = "";
@@ -1565,10 +1616,10 @@
         const isSelected = selectedProblem === prob.key;
         const card = document.createElement("button");
         card.type = "button";
-        card.className = `text-left p-4 rounded-xl border-2 transition-all duration-300 active:scale-95 flex items-start gap-4 relative ${
+        card.className = `text-left p-4 rounded-2xl border-2 card-adventure active:scale-95 flex items-start gap-4 relative outline-none ${
           isSelected 
-            ? 'bg-rose-50 border-rose-455 text-rose-950 shadow-md scale-102' 
-            : 'bg-white border-slate-200 hover:border-slate-300 text-slate-655 hover:scale-101'
+            ? 'bg-teal-50/70 border-teal-500 text-slate-900 shadow-premium-sm scale-102 font-bold' 
+            : 'bg-white border-slate-200 hover:border-teal-350 text-slate-600'
         }`;
         
         card.onclick = () => {
@@ -1582,11 +1633,11 @@
         card.innerHTML = `
           <div class="shrink-0 mt-0.5">${iconHTML}</div>
           <div class="flex flex-col">
-            <span class="font-extrabold text-sm text-slate-800">${prob.text}</span>
+            <span class="font-extrabold text-xs sm:text-sm text-slate-800">${prob.title}</span>
             <span class="text-[11px] text-slate-400 font-bold leading-normal">${prob.sub}</span>
           </div>
           ${isSelected ? `
-            <span class="absolute top-3 right-3 bg-rose-500 text-white rounded-full p-0.5 animate-bounce">
+            <span class="absolute top-3 right-3 bg-teal-600 text-white rounded-full p-0.5 animate-bounce">
               <i data-lucide="check" class="w-4 h-4 text-white"></i>
             </span>
           ` : ''}
@@ -1594,7 +1645,6 @@
         container.appendChild(card);
       });
 
-      // Reflection reason input
       const reasonInput = document.getElementById("problem-reason-input");
       reasonInput.addEventListener("input", (e) => {
         problemExplanation = e.target.value;
@@ -1606,7 +1656,6 @@
       const reasonInput = document.getElementById("problem-reason-input");
       problemExplanation = hintText;
       reasonInput.value = hintText;
-      setEncouragementText("This shows why your mission matters.");
       validateStepCompletion();
     }
 
@@ -1617,8 +1666,8 @@
       const globeCaption = document.getElementById("globe-caption");
 
       globeHalo.className = "absolute w-36 h-36 rounded-full filter blur-xl transition-all duration-700 bg-teal-400/30 scale-120";
-      globeBody.className = "relative z-10 w-24 h-24 rounded-full flex items-center justify-center border-4 border-teal-500 bg-teal-55 scale-105 shadow-[0_0_20px_rgba(20,184,166,0.3)]";
-      globeCaption.innerText = `Active Target: ${problem.title}`;
+      globeBody.className = "relative z-10 w-24 h-24 rounded-full flex items-center justify-center border-4 border-teal-500 bg-teal-50 scale-105 shadow-[0_0_20px_rgba(20,184,166,0.3)] transition-all";
+      globeCaption.innerText = `Focus: ${problem.title}`;
 
       let emoji = "🌍";
       if (problem.key === "Healthy lives") emoji = "🍎";
@@ -1627,11 +1676,47 @@
       if (problem.key === "No one left out") emoji = "🤝";
 
       globeEmoji.innerText = emoji;
-      globeEmoji.className = "text-4xl animate-pulse";
-      setEncouragementText("You’ve chosen your hero target.");
+      globeEmoji.className = "text-4xl animate-pulse select-none";
+      setEncouragementText("Target challenge set! Ready to build your purpose statement.");
     }
 
-    // Step 5: Mission builder dropdown synchronisation
+    // Problem icon SVGs matching key themes
+    function getProblemIcon(problemKey, sizeClass = "w-9 h-9") {
+      switch (problemKey) {
+        case 'Healthy lives':
+          return `
+            <svg class="${sizeClass} text-rose-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path d="M12 21 C12 21, 3.5 14, 3.5 9 C3.5 6, 5.5 3.5, 8.5 3.5 C10.5 3.5, 11.5 4.5, 12 5 C12.5 4.5, 13.5 3.5, 15.5 3.5 C18.5 3.5, 20.5 6, 20.5 9 C20.5 14, 12 21, 12 21 Z" fill="#ffe4e6" stroke="currentColor" />
+              <path d="M9.5 8.5 Q12 11.5, 14.5 8.5" stroke="currentColor" stroke-linecap="round" />
+            </svg>
+          `;
+        case 'Good education for all':
+          return `
+            <svg class="${sizeClass} text-amber-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path d="M12 19.5 C8 19.5, 4.5 17.5, 2 16.5 V5 C4.5 6, 8 7.5, 12 7.5 C16 7.5, 19.5 6, 22 5 V16.5 C19.5 17.5, 16 19.5, 12 19.5 Z" fill="#fef3c7" stroke="currentColor" />
+              <line x1="12" y1="7.5" x2="12" y2="19.5" stroke="currentColor" />
+            </svg>
+          `;
+        case 'Protecting nature and animals':
+          return `
+            <svg class="${sizeClass} text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" fill="#e2fcf7" />
+              <path d="M13 14 C13 9.5, 21.5 9.5, 21.5 14 Z" fill="#d1fae5" stroke="currentColor" />
+            </svg>
+          `;
+        case 'No one left out':
+          return `
+            <svg class="${sizeClass} text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <rect x="1" y="1" width="22" height="22" rx="4" fill="#e0e7ff" stroke="none" />
+              <circle cx="12" cy="7.5" r="2" stroke="currentColor" fill="none" />
+            </svg>
+          `;
+        default:
+          return "";
+      }
+    }
+
+    // STEP 5 Command builder dropdown syncs
     function syncBuilderFromDropdowns() {
       builderStyle = document.getElementById("builder-style-select").value;
       builderStrength = document.getElementById("builder-strength-select").value;
@@ -1639,24 +1724,24 @@
       builderImpact = document.getElementById("builder-impact-input").value;
       smallStepAction = document.getElementById("term-action-input").value;
 
-      // Update interactive icons
+      // Update styling icons
       const styleIconDiv = document.getElementById("builder-style-icon");
       styleIconDiv.innerHTML = builderStyle ? getStyleIconHTML(builderStyle, "w-5 h-5") : "";
 
       const problemIconDiv = document.getElementById("builder-problem-icon");
-      problemIconDiv.innerHTML = builderProblem ? getProblemIcon(builderProblem, "w-5 h-5") : `<i data-lucide="globe" class="w-5 h-5 text-rose-300"></i>`;
+      problemIconDiv.innerHTML = builderProblem ? getProblemIcon(builderProblem, "w-5 h-5") : `<i data-lucide="globe" class="w-5 h-5 text-slate-300"></i>`;
       lucide.createIcons();
 
-      // Check complete steps to display encouragement/unlocked checkmarks
+      // Completeness check
       const block1 = document.getElementById("builder-block-1");
       const block1Lock = document.getElementById("block-1-lock");
       const block1Enc = document.getElementById("block-1-encouragement");
       if (builderStyle && builderStrength) {
-        block1.className = "p-4 rounded-xl border transition-all bg-emerald-50/50 border-emerald-300 shadow-sm";
-        block1Lock.innerHTML = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 animate-popIn"><i data-lucide="check" class="w-3.5 h-3.5"></i> LOCKED</span>`;
+        block1.className = "p-4 rounded-xl border transition-all bg-teal-50/20 border-teal-300 shadow-xs";
+        block1Lock.innerHTML = `<span class="bg-teal-100 text-teal-800 text-[10px] font-black px-2.5 py-1 rounded-lg flex items-center gap-1 animate-popIn"><i data-lucide="check" class="w-3.5 h-3.5"></i> LOCKED</span>`;
         block1Enc.classList.remove("hidden");
       } else {
-        block1.className = "p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200";
+        block1.className = "p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200 shadow-xs";
         block1Lock.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> INCOMPLETE`;
         block1Enc.classList.add("hidden");
       }
@@ -1665,11 +1750,11 @@
       const block2Lock = document.getElementById("block-2-lock");
       const block2Enc = document.getElementById("block-2-encouragement");
       if (builderProblem) {
-        block2.className = "p-4 rounded-xl border transition-all bg-emerald-50/50 border-emerald-300 shadow-sm";
-        block2Lock.innerHTML = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 animate-popIn"><i data-lucide="check" class="w-3.5 h-3.5"></i> LOCKED</span>`;
+        block2.className = "p-4 rounded-xl border transition-all bg-teal-50/20 border-teal-300 shadow-xs";
+        block2Lock.innerHTML = `<span class="bg-teal-100 text-teal-800 text-[10px] font-black px-2.5 py-1 rounded-lg flex items-center gap-1 animate-popIn"><i data-lucide="check" class="w-3.5 h-3.5"></i> LOCKED</span>`;
         block2Enc.classList.remove("hidden");
       } else {
-        block2.className = "p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200";
+        block2.className = "p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200 shadow-xs";
         block2Lock.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> INCOMPLETE`;
         block2Enc.classList.add("hidden");
       }
@@ -1678,44 +1763,48 @@
       const block3Lock = document.getElementById("block-3-lock");
       const block3Enc = document.getElementById("block-3-encouragement");
       if (builderImpact) {
-        block3.className = "p-4 rounded-xl border transition-all bg-emerald-50/50 border-emerald-300 shadow-sm";
-        block3Lock.innerHTML = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 animate-popIn"><i data-lucide="check" class="w-3.5 h-3.5"></i> LOCKED</span>`;
+        block3.className = "p-4 rounded-xl border transition-all bg-teal-50/20 border-teal-300 shadow-xs";
+        block3Lock.innerHTML = `<span class="bg-teal-100 text-teal-800 text-[10px] font-black px-2.5 py-1 rounded-lg flex items-center gap-1 animate-popIn"><i data-lucide="check" class="w-3.5 h-3.5"></i> LOCKED</span>`;
         block3Enc.classList.remove("hidden");
       } else {
-        block3.className = "p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200";
+        block3.className = "p-4 rounded-xl border transition-all bg-slate-50/50 border-slate-200 shadow-xs";
         block3Lock.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> INCOMPLETE`;
         block3Enc.classList.add("hidden");
       }
       lucide.createIcons();
 
-      // Realtime Preview Sentence String Loader
-      document.getElementById("preview-style").innerText = builderStyle ? builderStyle.split(" (")[0] : "______";
-      document.getElementById("preview-style").className = builderStyle ? "text-teal-900 bg-teal-100/50 border border-teal-300/40 shadow-sm inline-block px-1.5 py-0.5 rounded" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded";
+      // Live update preview sentence stems
+      const previewStyleEl = document.getElementById("preview-style");
+      previewStyleEl.innerText = builderStyle ? builderStyle.split(" (")[0] : "______";
+      previewStyleEl.className = builderStyle ? "text-teal-950 bg-teal-100/50 border border-teal-300/40 shadow-xs inline-block px-2 py-0.5 rounded-lg font-bold" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg";
 
-      document.getElementById("preview-strength").innerText = builderStrength ? builderStrength : "______";
-      document.getElementById("preview-strength").className = builderStrength ? "text-teal-905 bg-teal-100/50 border border-teal-300/40 shadow-sm inline-block px-1.5 py-0.5 rounded" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded";
+      const previewStrengthEl = document.getElementById("preview-strength");
+      previewStrengthEl.innerText = builderStrength ? builderStrength : "______";
+      previewStrengthEl.className = builderStrength ? "text-teal-955 bg-teal-100/50 border border-teal-300/40 shadow-xs inline-block px-2 py-0.5 rounded-lg font-bold" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg";
 
-      document.getElementById("preview-problem").innerText = builderProblem ? builderProblem : "______";
-      document.getElementById("preview-problem").className = builderProblem ? "text-rose-900 bg-rose-100/45 border border-rose-300/40 shadow-sm inline-block px-1.5 py-0.5 rounded" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded";
+      const previewProblemEl = document.getElementById("preview-problem");
+      previewProblemEl.innerText = builderProblem ? builderProblem : "______";
+      previewProblemEl.className = builderProblem ? "text-teal-955 bg-teal-100/50 border border-teal-300/40 shadow-xs inline-block px-2 py-0.5 rounded-lg font-bold" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg";
 
-      document.getElementById("preview-impact").innerText = builderImpact ? builderImpact : "______";
-      document.getElementById("preview-impact").className = builderImpact ? "text-amber-900 bg-amber-100/45 border border-amber-300/40 shadow-sm inline-block px-1.5 py-0.5 rounded" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded";
+      const previewImpactEl = document.getElementById("preview-impact");
+      previewImpactEl.innerText = builderImpact ? builderImpact : "______";
+      previewImpactEl.className = builderImpact ? "text-teal-955 bg-teal-100/50 border border-teal-300/40 shadow-xs inline-block px-2 py-0.5 rounded-lg font-bold" : "text-slate-400 border-b-2 border-dashed border-slate-300 inline-block px-1.5 py-0.5 rounded-lg";
 
-      // Progress Badge update
+      // Verify mission status
       const statusBadge = document.getElementById("mission-status-badge");
       const lockBtn = document.getElementById("lock-mission-btn");
       if (builderStyle && builderStrength && builderProblem && builderImpact && smallStepAction) {
         if (!missionLockedIn) {
-          statusBadge.innerText = "🎉 Mission ready! You can lock it in now.";
-          statusBadge.className = "text-xs text-emerald-800 font-bold bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-250 inline-block animate-bounce";
+          statusBadge.innerText = "🎉 All systems green! Lock in to claim your Purpose Card.";
+          statusBadge.className = "text-xs text-teal-850 font-bold bg-teal-50 px-3 py-1.5 rounded-full border border-teal-250 inline-block animate-bounce";
         }
         lockBtn.disabled = false;
-        lockBtn.className = "w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-lg bg-teal-600 hover:bg-teal-700 text-white cursor-pointer shadow-md active:scale-95 transition-all";
+        lockBtn.className = "w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-xl bg-teal-600 hover:bg-teal-750 text-white cursor-pointer shadow-md active:scale-95 transition-all";
       } else {
-        statusBadge.innerText = "⏳ Keep going. Your mission is still loading…";
-        statusBadge.className = "text-xs text-amber-800 font-bold bg-amber-50 px-3 py-1.5 rounded-full border border-amber-205 inline-block";
+        statusBadge.innerText = "⏳ Complete steps 1, 2, and 3 to assemble your mission...";
+        statusBadge.className = "text-xs text-amber-805 font-bold bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200 inline-block";
         lockBtn.disabled = true;
-        lockBtn.className = "w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-lg bg-slate-105 text-slate-400 border border-slate-200 cursor-not-allowed";
+        lockBtn.className = "w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-xl bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed transition-all shadow-xs";
       }
     }
 
@@ -1726,32 +1815,26 @@
 
     function lockInMyMission() {
       missionLockedIn = true;
-      setEncouragementText("Mission unlocked! You now have a purpose sentence.");
+      setEncouragementText("Mission Control authorized! Click below to view your collectible Purpose Card.");
 
-      // Hide badge status & button
       document.getElementById("mission-status-badge").classList.add("hidden");
       const lockContainer = document.getElementById("lock-mission-container");
       lockContainer.innerHTML = `
         <div class="space-y-4 animate-popIn">
-          <div class="bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-955 p-2.5 rounded-lg text-center font-black text-xs uppercase tracking-widest shadow-md">
-            ✨ Mission Unlocked!
+          <div class="bg-gradient-to-r from-teal-600 to-teal-500 text-white p-2.5 rounded-xl text-center font-black text-xs uppercase tracking-widest shadow-md">
+            ✨ MISSION STATEMENT AUTHORIZED!
           </div>
-          <p class="text-[11px] text-teal-800 text-center font-bold">
-            Mission unlocked! You now have a purpose sentence. You can still change it later as you grow.
-          </p>
           <button 
             type="button" 
             onclick="gotoStep(6)" 
-            class="w-full bg-teal-600 hover:bg-teal-700 text-white font-black text-xs uppercase tracking-wider py-3 rounded-lg flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+            class="w-full bg-teal-600 hover:bg-teal-750 text-white font-black text-xs uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
           >
-            See my Purpose Card
+            Claim My Purpose Card
             <i data-lucide="chevron-right" class="w-4 h-4"></i>
           </button>
         </div>
       `;
 
-      // Trigger sparkles
-      animateAvatar = true;
       const sparkles = document.getElementById("sparkle-layer");
       sparkles.classList.remove("hidden");
       setTimeout(() => { sparkles.classList.add("hidden"); }, 2000);
@@ -1760,19 +1843,18 @@
       validateStepCompletion();
     }
 
-    // Step 6: Certificate layout card update
+    // Populate final collectible Card frame
     function populateFinalCertificateCard() {
-      document.getElementById("card-date").innerText = `Formed on ${new Date().toLocaleDateString('en-SG')}`;
+      document.getElementById("card-date").innerText = `Unlocked: ${new Date().toLocaleDateString('en-SG')}`;
       document.getElementById("card-name-field").innerText = studentName ? studentName : "_______________________";
 
-      // Chosen style
       const stylesBox = document.getElementById("card-styles-container");
       stylesBox.innerHTML = "";
       if (selectedStyles.length > 0) {
         selectedStyles.forEach((style) => {
           stylesBox.innerHTML += `
-            <div class="bg-teal-50 text-teal-905 text-xs font-bold px-3 py-1.5 rounded-lg border border-teal-100 flex items-center gap-2">
-              <div class="scale-75 shrink-0 bg-white p-0.5 rounded">
+            <div class="bg-teal-50/50 text-teal-900 text-[10px] font-bold px-3 py-1 rounded-xl border border-teal-100 flex items-center gap-2 shadow-xs">
+              <div class="scale-75 shrink-0 bg-white p-0.5 rounded-lg">
                 ${getStyleIconHTML(style, "w-5 h-5")}
               </div>
               <span>${style}</span>
@@ -1780,46 +1862,40 @@
           `;
         });
       } else {
-        stylesBox.innerHTML = `<span class="text-xs text-slate-400 italic">None selected yet. Go back to choose!</span>`;
+        stylesBox.innerHTML = `<span class="text-xs text-slate-400 italic">None selected. Go back to discover styles!</span>`;
       }
 
-      // Chosen strengths
       const strengthsBox = document.getElementById("card-strengths-container");
       strengthsBox.innerHTML = "";
       if (selectedStrengths.length > 0) {
         selectedStrengths.forEach((str) => {
           strengthsBox.innerHTML += `
-            <span class="bg-teal-55 text-teal-850 text-xs font-black px-3 py-1.5 rounded-lg border border-teal-200 animate-popIn">
+            <span class="bg-teal-50 text-teal-900 text-[10px] font-black px-3 py-1 rounded-xl border border-teal-200 animate-popIn">
               ⭐ ${str}
             </span>
           `;
         });
       } else {
-        strengthsBox.innerHTML = `<span class="text-xs text-slate-400 italic">None selected yet. Go back to choose!</span>`;
+        strengthsBox.innerHTML = `<span class="text-xs text-slate-400 italic">None selected. Go back to collect superpowers!</span>`;
       }
 
-      // Target problem icon + text
       document.getElementById("card-problem-text").innerText = selectedProblem ? selectedProblem : "Not selected yet.";
       const problemIconBox = document.getElementById("card-problem-icon-container");
-      problemIconBox.innerHTML = selectedProblem ? getProblemIcon(selectedProblem, "w-8 h-8") : `<i data-lucide="globe" class="w-8 h-8 text-rose-300"></i>`;
+      problemIconBox.innerHTML = selectedProblem ? getProblemIcon(selectedProblem, "w-7 h-7") : `<i data-lucide="globe" class="w-7 h-7 text-teal-300"></i>`;
 
-      // Full generated statement
       const sentenceBox = document.getElementById("card-purpose-sentence");
       if (builderStyle && builderStrength && builderProblem && builderImpact) {
         sentenceBox.innerText = `"I want to use my ${builderStyle.split(" (")[0]} style and my strength of ${builderStrength} to help with ${builderProblem} so that ${builderImpact}."`;
       } else {
-        sentenceBox.innerHTML = `<span class="text-slate-500 font-semibold italic">Please complete Step 5 builder to generate your sentence fully.</span>`;
+        sentenceBox.innerHTML = `<span class="text-slate-500 font-semibold italic">Complete Checklist step 5 to generate your purpose sentence...</span>`;
       }
 
-      // Small term action step
       document.getElementById("card-action-text").innerText = smallStepAction ? `💡 ${smallStepAction}` : "💡 _________________________________________________";
       lucide.createIcons();
     }
 
     function backToEdit() {
       missionLockedIn = false;
-      
-      // Reset lock-mission container HTML back to default
       const lockContainer = document.getElementById("lock-mission-container");
       lockContainer.innerHTML = `
         <button 
@@ -1827,73 +1903,77 @@
           type="button" 
           disabled 
           onclick="lockInMyMission()" 
-          class="w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-lg bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
+          class="w-full flex items-center justify-center gap-1.5 text-xs font-black tracking-wider uppercase py-3 rounded-xl bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed shadow-xs"
         >
           <i data-lucide="lock" class="w-4 h-4"></i>
-          Lock in my mission
+          Assemble & Complete Mission
         </button>
       `;
       gotoStep(5);
       syncBuilderFromDropdowns();
     }
 
-    // Step-by-Step Controller logic
+    // Step navigator logic
     function gotoStep(stepNum) {
       if (stepNum > 6 || stepNum < 1) return;
       currentStep = stepNum;
 
-      // Hide all screens
+      // Toggle active screens
       document.querySelectorAll(".step-screen").forEach(scr => scr.classList.add("hidden"));
-      // Show active screen
       document.getElementById(`screen-${currentStep}`).classList.remove("hidden");
 
-      // Update checkpoint badges and text descriptions dynamically
-      const activeHeader = stepHeadersMap[Math.min(currentStep, 5)];
+      // Update badge headings
       document.getElementById("checkpoint-badge").innerText = stepHeadersMap[currentStep].badge;
       document.getElementById("step-title-header").innerText = stepHeadersMap[currentStep].title;
 
-      // Toggle step background tints beautifully
-      const body = document.body;
-      body.className = `min-h-screen bg-gradient-to-b ${bgStepTints[currentStep - 1]} text-slate-800 font-sans selection:bg-teal-100 flex flex-col justify-between transition-colors duration-1000`;
+      // Set ambient graphic text
+      document.getElementById("ambient-graphic-panel").innerHTML = ambientStepGraphics[currentStep];
 
-      // Update journey progress line
+      // Update body background gradient scene
+      document.body.className = `min-h-screen bg-gradient-to-b ${bgStepTints[currentStep - 1]} text-slate-800 font-sans selection:bg-teal-100 flex flex-col justify-between transition-all duration-1000 overflow-x-hidden`;
+
+      // Update progress line paths
       const activeJourneyIndex = Math.min(currentStep, 5) - 1;
       const filledJourneyLine = document.getElementById("filled-journey-line");
-      filledJourneyLine.style.width = `${(activeJourneyIndex / 4) * 85}%`;
+      filledJourneyLine.style.width = `${(activeJourneyIndex / 4) * 90}%`;
 
-      // Update avatar layout position
+      // Animate moving avatar character
       const avatarContainer = document.getElementById("avatar-container");
-      avatarContainer.style.left = `calc(10px + ${activeJourneyIndex * 25}% + (1.2rem - ${activeJourneyIndex * 0.65}rem))`;
+      avatarContainer.style.left = `calc(12px + ${activeJourneyIndex * 23.5}% + (1.2rem - ${activeJourneyIndex * 0.5}rem))`;
+      
+      const avatarKid = document.getElementById("explorer-kid-avatar");
+      avatarKid.classList.remove("animate-waveAndSparkle");
+      void avatarKid.offsetWidth; // Trigger reflow
+      avatarKid.classList.add("animate-waveAndSparkle");
 
-      // Update node visual tags (completed/active states)
+      // Set dynamic states on nodes
       document.querySelectorAll(".journey-node").forEach((node, idx) => {
         const nodeStepId = idx + 1;
         const isCompleted = currentStep > nodeStepId;
         const isActive = currentStep === nodeStepId;
 
-        node.className = `journey-node relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 outline-none`;
+        node.className = `journey-node relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 outline-none`;
         if (isActive) {
           node.className += " bg-teal-600 text-white ring-4 ring-teal-100 scale-110 shadow-md";
         } else if (isCompleted) {
           node.className += " bg-teal-500 text-white hover:bg-teal-600 cursor-pointer";
         } else if (unlockedBadges.includes(nodeStepId)) {
-          node.className += " bg-slate-100 text-teal-700 border-2 border-teal-400 hover:bg-teal-55 cursor-pointer";
+          node.className += " bg-slate-100 text-teal-700 border-2 border-teal-400 hover:bg-teal-50 cursor-pointer";
         } else {
           node.className += " bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed";
         }
       });
 
-      // Update Labels color
+      // Highlight active path texts
       for (let sId = 1; sId <= 5; sId++) {
         const label = document.getElementById(`label-${sId}`);
         if (sId === currentStep) {
-          label.className = "w-1/5 flex flex-col items-center text-teal-700 font-extrabold";
+          label.className = "w-1/5 flex flex-col items-center text-teal-900 font-extrabold scale-102 transition-all";
         } else {
-          label.className = "w-1/5 flex flex-col items-center opacity-65";
+          label.className = "w-1/5 flex flex-col items-center opacity-65 transition-all text-slate-500";
         }
       }
 
-      // Sync specific data on final step transition
       if (currentStep === 5) {
         populateStep5BuilderDropOptionValues();
         syncBuilderFromDropdowns();
@@ -1903,20 +1983,17 @@
         populateFinalCertificateCard();
       }
 
-      // Update encouraging text message bubble
       updateStepUI();
       validateStepCompletion();
     }
 
     function populateStep5BuilderDropOptionValues() {
-      // Styles dropdown Sync
       const styleSelect = document.getElementById("builder-style-select");
       styleSelect.innerHTML = `<option value="">-- Choose Style --</option>`;
       stylesList.forEach((styleObj) => {
         styleSelect.innerHTML += `<option value="${styleObj.key}">${styleObj.title}</option>`;
       });
       if (selectedStyles.length > 0) {
-        // Auto select first chosen style if not set yet
         const defaultStyle = selectedStyles[0];
         const match = stylesList.find(s => s.key === defaultStyle);
         if (match && !builderStyle) {
@@ -1925,7 +2002,6 @@
       }
       styleSelect.value = builderStyle;
 
-      // Strengths dropdown Sync
       const strengthSelect = document.getElementById("builder-strength-select");
       strengthSelect.innerHTML = `<option value="">-- Choose Strength --</option>`;
       strengthsList.forEach((strength) => {
@@ -1936,7 +2012,6 @@
       }
       strengthSelect.value = builderStrength;
 
-      // Problems dropdown Sync
       const problemSelect = document.getElementById("builder-problem-select");
       problemSelect.innerHTML = `<option value="">-- Choose Target Problem --</option>`;
       problemsList.forEach((prob) => {
@@ -1948,25 +2023,34 @@
       problemSelect.value = builderProblem;
     }
 
-    // Toggle notes & microcopy texts according to step values
+    function showResetConfirmation() {
+      document.getElementById("custom-confirm-modal").classList.remove("hidden");
+    }
+
+    function hideResetConfirmation() {
+      document.getElementById("custom-confirm-modal").classList.add("hidden");
+    }
+
+    function confirmReset() {
+      hideResetConfirmation();
+      window.location.reload();
+    }
+
     function updateStepUI() {
-      // Notes indexing
       document.getElementById("teacher-notes-step-num").innerText = currentStep;
       document.getElementById("teacher-notes-content").innerHTML = teacherNotesMap[Math.min(currentStep, 6)];
 
-      // Progress bottom control btn sync
       const prevBtn = document.getElementById("prev-btn");
       const nextBtn = document.getElementById("next-btn");
 
       if (currentStep === 1) {
         prevBtn.disabled = true;
-        prevBtn.className = "flex items-center gap-1.5 text-xs font-black tracking-wider uppercase px-4 py-2 rounded-lg transition-all text-slate-550 cursor-not-allowed opacity-50";
+        prevBtn.className = "flex items-center gap-1.5 text-xs font-black tracking-wider uppercase px-4 py-2.5 rounded-xl transition-all text-slate-400 cursor-not-allowed opacity-50";
       } else {
         prevBtn.disabled = false;
-        prevBtn.className = "flex items-center gap-1.5 text-xs font-black tracking-wider uppercase px-4 py-2 rounded-lg transition-all text-slate-600 hover:bg-slate-100 cursor-pointer";
+        prevBtn.className = "flex items-center gap-1.5 text-xs font-black tracking-wider uppercase px-4 py-2.5 rounded-xl transition-all text-slate-600 hover:bg-slate-100 cursor-pointer";
       }
 
-      // Hide default next step controls on screen 5 - user locks in mission instead
       if (currentStep === 5) {
         nextBtn.classList.add("hidden");
       } else {
@@ -1975,29 +2059,23 @@
 
       if (currentStep === 6) {
         nextBtn.disabled = true;
-        nextBtn.innerHTML = `<span>All checkpoints done!</span> <i data-lucide="check-circle-2" class="w-4 h-4"></i>`;
-        nextBtn.className = "flex items-center gap-1.5 text-teal-600 text-xs font-black tracking-wider uppercase px-5 py-2.5 rounded-lg opacity-80 cursor-default";
+        nextBtn.innerHTML = `<span>Completed!</span> <i data-lucide="check-circle-2" class="w-4 h-4 text-teal-600 animate-bounce"></i>`;
+        nextBtn.className = "flex items-center gap-1.5 text-teal-600 text-xs font-black tracking-wider uppercase px-5 py-2.5 rounded-xl opacity-80 cursor-default";
       } else {
-        nextBtn.innerHTML = `<span>Next Step</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-        nextBtn.className = "flex items-center gap-1.5 bg-teal-600 hover:bg-teal-755 text-white text-xs font-black tracking-wider uppercase px-5 py-2.5 rounded-lg active:scale-95 transition-all shadow-sm cursor-pointer";
+        nextBtn.innerHTML = `<span>Next Checkpoint</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        nextBtn.className = "flex items-center gap-1.5 bg-teal-600 hover:bg-teal-750 text-white text-xs font-black tracking-wider uppercase px-5 py-2.5 rounded-xl active:scale-95 transition-all shadow-md cursor-pointer";
       }
 
       lucide.createIcons();
     }
 
-    // Validates if the next button should be highlighted/enabled (non-strict mode for primary students)
     function validateStepCompletion() {
-      const nextBtn = document.getElementById("next-btn");
-      
-      // Update unlocked state map internally to let nodes become clickable
       if (!unlockedBadges.includes(currentStep)) {
         unlockedBadges.push(currentStep);
       }
       if (currentStep < 6 && !unlockedBadges.includes(currentStep + 1)) {
         unlockedBadges.push(currentStep + 1);
       }
-
-      // Display dynamic encouraging text bubble
       document.getElementById("encouragement-text").innerText = encouragementText;
     }
 
@@ -2013,21 +2091,13 @@
       }
     }
 
-    // Resets to initial clean state
-    function resetModule() {
-      if (confirm("Are you sure you want to reset your choices for this module?")) {
-        window.location.reload();
-      }
-    }
-
-    // Interactive Right Column: Conversation Cards setup
     function buildCardCategories() {
       const tabs = document.getElementById("card-categories-tabs");
       tabs.innerHTML = "";
       Object.keys(conversationDeck).map((cat) => {
         const isSelected = currentCategory === cat;
         const tab = document.createElement("button");
-        tab.className = `text-[10px] font-black px-2 py-1 rounded transition-all flex-grow text-center ${
+        tab.className = `text-[10px] font-black px-2 py-1.5 rounded-lg transition-all flex-grow text-center outline-none ${
           isSelected ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-500 hover:text-slate-750'
         }`;
         tab.innerText = cat;
